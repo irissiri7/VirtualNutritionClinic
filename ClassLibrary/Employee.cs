@@ -32,5 +32,6 @@ namespace NutritionClinicLibrary
             return new string(Enumerable.Repeat(chars, lengthOfId).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        public abstract void Introduction();
     }
 }

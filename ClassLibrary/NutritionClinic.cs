@@ -10,17 +10,17 @@ namespace NutritionClinicLibrary
         public Dietitian Dietitian { get; private set; }
         public PersonalTrainer PersonalTrainer { get; set; }
         public Client Client { get; set; }
+        private List<Client> ClientRecord { get; set; }
 
         //FIELDS
+        //CONSTRUCTOR (SINGELTON)///////////////////////////
         private static NutritionClinic instance;
-        //CONSTRUCTOR (SINGELTON)
         private NutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {
             Name = name;
             Dietitian = dietitian;
             PersonalTrainer = personalTrainer;
         }
-
         public static NutritionClinic CreateNutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {
             if(instance == null)
@@ -29,7 +29,9 @@ namespace NutritionClinicLibrary
             }
             return instance;
         }
+        ////////////////////////////////////////////////////////
 
+        //METHODS
         public void SignInNewClient(Client client)
         {
             Console.WriteLine($"Welcome {client.Name} to the {Name} clinic!");
@@ -39,7 +41,6 @@ namespace NutritionClinicLibrary
 
             Client = client;
         }
-        
-        //METHODS
+
     }
 }

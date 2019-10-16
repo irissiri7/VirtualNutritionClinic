@@ -33,10 +33,10 @@ namespace NutritionClinicLibrary
         {
             if(someClient.BMI < 18.5)
             {
-                return someClient.Weight * 1.5;
+                return Math.Round(someClient.Weight * 1.5);
             }
             
-            return someClient.Weight * 0.8;
+            return Math.Round(someClient.Weight * 0.8);
         }
         public void Evaluate(Smoothie someSmoothie, Client someClient)
         {
@@ -49,6 +49,12 @@ namespace NutritionClinicLibrary
             {
                 FeedbackGenerator.PositiveFeedback();
             }
+        }
+
+        public override void Introduction()
+        {
+            Console.WriteLine($"Hi! My name is {this.Name} and I love working out!");
+
         }
     }
 }

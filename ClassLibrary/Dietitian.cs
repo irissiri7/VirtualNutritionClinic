@@ -35,24 +35,24 @@ namespace NutritionClinicLibrary
             float idealWeight = idealBMI * (float)Math.Pow(someClient.Height, 2);
             return idealWeight;
         }
-        public float EstimateKcalNeedPerDay(Client someClient)
+        public double EstimateKcalNeedPerDay(Client someClient)
         {
-            int kcalNeedPerKgBodyWeightIfOverWeight = 25;
-            int kcalNeedPerKgBodyWeightIfUnderWeight = 35;
-            int kcalNeedPerKgBodyWeightIfNormalWeight = 30;
+            int kcalNeedPerKgOverWeight = 25;
+            int kcalNeedPerKgNormalWeight = 30;
+            int kcalNeedPerKgUnderWeight = 35;
 
             if (someClient.BMI > 25.0F)
             {
-                return someClient.Weight * kcalNeedPerKgBodyWeightIfOverWeight;
+                return Math.Round(someClient.Weight * kcalNeedPerKgOverWeight);
             }
             else if (someClient.BMI < 18.5F)
             {
-                return someClient.Weight * kcalNeedPerKgBodyWeightIfUnderWeight;
+                return Math.Round(someClient.Weight * kcalNeedPerKgUnderWeight);
 
             }
             else
             {
-                return someClient.Weight * kcalNeedPerKgBodyWeightIfNormalWeight;
+                return Math.Round(someClient.Weight * kcalNeedPerKgNormalWeight);
 
             }
         }
@@ -68,6 +68,11 @@ namespace NutritionClinicLibrary
                 FeedbackGenerator.PositiveFeedback();
 
             }
+        }
+
+        public override void Introduction()
+        {
+            Console.WriteLine($"Hi! My name is {this.Name} and I love food");
         }
     }
 }

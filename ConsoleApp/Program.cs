@@ -15,7 +15,7 @@ namespace ConsoleApp
             NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("LydiaFoundation", theDietitian, thePersonalTrainer);
             
             //Setting up clients
-            Client theClient = new Client("Helena", 1.78F, 60.5F, theDietitian);
+            Client theClient = new Client("Helena", 1.78F, 60.5F, theDietitian, thePersonalTrainer);
 
             theClinic.SignInNewClient(theClient);
             

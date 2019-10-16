@@ -10,28 +10,29 @@ namespace NutritionClinicLibrary
         //PROPERTIES
         public string Name { get; set; }
         
-        public float Height { get; set; }
-        public float Weight { get; set; }
-        public float BMI { get => Weight / (Height * Height); }
+        public double Height { get; set; }
+        public double Weight { get; set; }
+        public double BMI { get => Math.Round(Weight / (Height * Height),1); }
 
         public Dietitian PersonalDietitian { get; set; }
         public PersonalTrainer PersonalTrainer { get; set; }
 
 
-        public float KcalNeedPerDay { get => PersonalDietitian.EstimateKcalNeedPerDay(this); }
-        public double ProteinNeedPerDay { get => PersonalTrainer. }
+        public double KcalNeedPerDay { get => PersonalDietitian.EstimateKcalNeedPerDay(this); }
+        public double ProteinNeedPerDay { get => PersonalTrainer.EstimateProteinNeedPerDay(this); }
 
-        public float KcalEatenToday { get; private set; }
-        public float ProteinEatenToday { get; private set; }
+        public int KcalEatenToday { get; private set; }
+        public int ProteinEatenToday { get; private set; }
 
 
         //CONSTRUCTOR
-        public Client(string name, float height, float weight, Dietitian dt)
+        public Client(string name, double height, double weight, Dietitian dt, PersonalTrainer pt)
         {
             Name = name;
-            Height = height;
-            Weight = weight;
+            Height = Math.Round(height,2);
+            Weight = Math.Round(weight,1);
             PersonalDietitian = dt;
+            PersonalTrainer = pt;
         }
 
         //METHODS
