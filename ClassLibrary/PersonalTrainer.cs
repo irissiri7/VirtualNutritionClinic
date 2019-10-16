@@ -4,17 +4,15 @@ using System.Text;
 
 namespace NutritionClinicLibrary
 {
-    public class PersonalTrainer : HealthCoach, ICoach
+    public class PersonalTrainer : Employee, IEvaluate
     {
         //PROPERTIES
-        public string EncouragingCatchPhrase { get; set; }
         //FIELDS
         //CONSTRUCTOR
-        public PersonalTrainer(string name, decimal salaryClaim, Positions position, string catchPhrase) : base(name, position, salaryClaim)
+        public PersonalTrainer(string name, Positions position) : base(name, position)
         {
-            EncouragingCatchPhrase = catchPhrase;
         }
-        
+
         //METHODS
         public static void GiveAdvice(Client someClient)
         {
@@ -31,10 +29,26 @@ namespace NutritionClinicLibrary
                 Console.WriteLine("You should vary between cardio and heavy lifting");
             }
         }
-
-        public void GiveEncouragement()
+        public double EstimateProteinNeedPerDay(Client someClient)
         {
-            Console.WriteLine();
+            if(someClient.BMI < 18.5)
+            {
+                return someClient.Weight * 1.5;
+            }
+            
+            return someClient.Weight * 0.8;
+        }
+        public void Evaluate(Smoothie someSmoothie, Client someClient)
+        {
+            double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.1;
+            if (someSmoothie.ProteinPerportion < proteinGoalPerSmoothie)
+            {
+                FeedbackGenerator.NotSoPositiveFeedback();
+            }
+            else
+            {
+                FeedbackGenerator.PositiveFeedback();
+            }
         }
     }
 }

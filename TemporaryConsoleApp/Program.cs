@@ -1,5 +1,5 @@
-﻿using System;
-using NutritionClinicLibrary
+﻿using NutritionClinicLibrary;
+using System;
 
 namespace TemporaryConsoleApp
 {

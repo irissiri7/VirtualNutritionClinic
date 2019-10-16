@@ -3,11 +3,13 @@
     public class Smoothie
     {
         public int KcalPerportion { get; private set; }
+        public int ProteinPerportion { get; private set; }
 
-        public Smoothie(SmoothieBar.Ingredients one, SmoothieBar.Ingredients two)
+
+        public Smoothie(Food one, Food two)
         {
-            KcalPerportion = (int)one + (int)two;
-            
+            KcalPerportion = one.KcalPerPortion + two.KcalPerPortion;
+            ProteinPerportion = one.ProteinPerPortion + two.ProteinPerPortion;
         }
 
     }

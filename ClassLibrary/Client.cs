@@ -9,33 +9,40 @@ namespace NutritionClinicLibrary
         //FIELDS
         //PROPERTIES
         public string Name { get; set; }
+        
         public float Height { get; set; }
         public float Weight { get; set; }
-        
         public float BMI { get => Weight / (Height * Height); }
-        public float IdealWeight { get => Dietitian.CalculateIdealWeight(this); }
-        public float KcalNeedPerDay { get => Dietitian.EstimateKcalNeedPerDay(this); }
+
+        public Dietitian PersonalDietitian { get; set; }
+        public PersonalTrainer PersonalTrainer { get; set; }
+
+
+        public float KcalNeedPerDay { get => PersonalDietitian.EstimateKcalNeedPerDay(this); }
+        public double ProteinNeedPerDay { get => PersonalTrainer. }
 
         public float KcalEatenToday { get; private set; }
+        public float ProteinEatenToday { get; private set; }
+
 
         //CONSTRUCTOR
-        public Client(string name, float height, float weight)
+        public Client(string name, float height, float weight, Dietitian dt)
         {
             Name = name;
             Height = height;
             Weight = weight;
-            NutritionClinic.CheckInNewClient(this);
-
+            PersonalDietitian = dt;
         }
+
         //METHODS
-        public void DrinkSmoothie(SmoothieBar.Ingredients food1, SmoothieBar.Ingredients food2)
+        public void DrinkSmoothie()
         {
-            Smoothie smoothie = SmoothieBar.MakeSmoothie(food1, food2);
-            
+            Smoothie smoothie = SmoothieBar.MakeSmoothie();
+            PersonalDietitian.Evaluate(smoothie, this);
             KcalEatenToday += smoothie.KcalPerportion;
 
         }
-        
+
         public void DoHeavyLifting()
         {
             KcalEatenToday -= 250;

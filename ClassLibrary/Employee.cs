@@ -8,22 +8,19 @@ namespace NutritionClinicLibrary
     public abstract class Employee
     {
         public enum Positions { Dietitian, PersonalTrainer}
+        
         //PROPERTIES
         public string Name { get; private set; }
-        public decimal Salary { get; private set; }
         public string Id { get; private set; }
         public Positions Position { get; private set; }
 
-
         //FIELDS
         //CONSTRUCTOR
-        public Employee(string name, Positions position, decimal salaryClaim)
+        public Employee(string name, Positions position)
         {
             Name = name;
-            Salary = salaryClaim;
             Id = GenerateId();
             Position = position;
-            NutritionClinic.HireNewEmployee(this);
         }
         //METHODS
         private string GenerateId()

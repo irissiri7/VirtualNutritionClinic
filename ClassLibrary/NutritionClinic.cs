@@ -7,53 +7,39 @@ namespace NutritionClinicLibrary
     {
         //PROPERTIES
         public string Name { get; private set; }
-        private List<Employee> EmployeeRecord { get; set; }
-        private List<Client> ClientRecord { get; set; }
-        public decimal Revenue { get; set; }
-        
+        public Dietitian Dietitian { get; private set; }
+        public PersonalTrainer PersonalTrainer { get; set; }
+        public Client Client { get; set; }
+
         //FIELDS
         private static NutritionClinic instance;
-        
         //CONSTRUCTOR (SINGELTON)
-        private NutritionClinic(string name)
+        private NutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {
             Name = name;
-            EmployeeRecord = new List<Employee>();
-            ClientRecord = new List<Client>();
-
+            Dietitian = dietitian;
+            PersonalTrainer = personalTrainer;
         }
 
-        public static NutritionClinic CreateNutritionClinic(string name)
+        public static NutritionClinic CreateNutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {
             if(instance == null)
             {
-                instance = new NutritionClinic(name);
+                instance = new NutritionClinic(name, dietitian, personalTrainer);
             }
             return instance;
         }
+
+        public void SignInNewClient(Client client)
+        {
+            Console.WriteLine($"Welcome {client.Name} to the {Name} clinic!");
+            Console.WriteLine("Let us sign you in");
+            Console.WriteLine($"Your personal dietitian will be {Dietitian.Name}. He/she will help you with anything food related");
+            Console.WriteLine($"Your personal trainer will be {PersonalTrainer.Name}. He/she will help you with anything related to training");
+
+            Client = client;
+        }
         
         //METHODS
-        internal static void HireNewEmployee(Employee newEmployee)
-        {
-            instance.EmployeeRecord.Add(newEmployee);
-        }
-
-        public static void CheckInNewClient(Client newClient)
-        {
-            instance.ClientRecord.Add(newClient);
-        }
-
-        public void PrintEmployeeRecord()
-        {
-            foreach(Employee e in EmployeeRecord)
-            {
-                Console.WriteLine(e.Name);
-                Console.WriteLine(e.Position);
-                Console.WriteLine(e.Salary);
-                Console.WriteLine(e.Id);
-                Console.WriteLine();
-
-            }
-        }
     }
 }
