@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutritionClinicLibrary", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{AF89122C-8B4B-4A1B-9715-A500C616294D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattiasSimulator", "MattiasSimulator\MattiasSimulator.csproj", "{ABDE0807-B85A-475F-A0EB-85C007CCBD85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AF89122C-8B4B-4A1B-9715-A500C616294D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF89122C-8B4B-4A1B-9715-A500C616294D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF89122C-8B4B-4A1B-9715-A500C616294D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
