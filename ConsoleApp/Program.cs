@@ -18,9 +18,7 @@ namespace ConsoleApp
             Client theClient = new Client("Helena", 1.78F, 60.5F, theDietitian, thePersonalTrainer);
 
             theClinic.SignInNewClient(theClient);
-            
 
-            Console.WriteLine("Hi");
         }
     }
 }

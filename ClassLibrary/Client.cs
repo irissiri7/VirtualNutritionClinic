@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ConsoleSimulationEngine2000;
 
 namespace NutritionClinicLibrary
 {
@@ -13,6 +14,8 @@ namespace NutritionClinicLibrary
         public double Height { get; set; }
         public double Weight { get; set; }
         public double BMI { get => Math.Round(Weight / (Height * Height),1); }
+        public double IdealWeight { get => Math.Round(25 * (Height * Height),1); }
+
 
         public Dietitian PersonalDietitian { get; set; }
         public PersonalTrainer PersonalTrainer { get; set; }
@@ -40,7 +43,10 @@ namespace NutritionClinicLibrary
         {
             Smoothie smoothie = SmoothieBar.MakeSmoothie();
             PersonalDietitian.Evaluate(smoothie, this);
+            
             KcalEatenToday += smoothie.KcalPerportion;
+            ProteinEatenToday += smoothie.ProteinPerportion;
+
 
         }
 
@@ -54,5 +60,28 @@ namespace NutritionClinicLibrary
             KcalEatenToday -= 500;
         }
 
+        public string CurrentState()
+        {
+            return $"Name: {Name}. Height: {Height}. Weight: {Weight}. BMI: {BMI}";  
+        }
+
+        public string Goals()
+        {
+            return $"Ideal weight: {IdealWeight}. Kcal/day: {KcalNeedPerDay} kcal. Protein/day {ProteinNeedPerDay} g.";
+
+
+        }
+
+        public string TodaysIntake()
+        {
+            return $"Kcal: {KcalEatenToday} kcal. Protein: {ProteinEatenToday} g.";
+
+
+        }
+
+        public void testmethod(BorderedDisplay display)
+        {
+            display.Value="WelcomeToTheSmoothiebar";
+        }
     }
 }
