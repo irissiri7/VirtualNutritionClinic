@@ -9,7 +9,9 @@ namespace MattiasSimulator
         static async System.Threading.Tasks.Task Main(string[] args)
         {
             var gui = new ConsoleGUI();
-            var sim = new MySimulation(gui);
+            var input = new TextInput();
+
+            var sim = new MySimulation(gui, input);
             await gui.Start(sim);
         }
     }
@@ -22,7 +24,7 @@ namespace MattiasSimulator
         private BorderedDisplay renderDisplay = new BorderedDisplay(0, 17, 20, 3) { };
         private BorderedDisplay printDisplay = new BorderedDisplay(0, 20, 20, 3) { };
         private readonly ConsoleGUI gui;
-        private readonly Input input;
+        private readonly TextInput input;
 
 
         public override List<BaseDisplay> Displays => new List<BaseDisplay>() {
@@ -33,10 +35,10 @@ namespace MattiasSimulator
         printDisplay,
         input.CreateDisplay(0, -3, -1) };
 
-        public MySimulation(ConsoleGUI gui)
+        public MySimulation(ConsoleGUI gui, TextInput input)
         {
             this.gui = gui;
-            this.input = gui.Input;
+            this.input = input;
         }
         public override void PassTime(int deltaTime)
         {
