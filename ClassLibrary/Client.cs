@@ -10,7 +10,7 @@ namespace NutritionClinicLibrary
         //FIELDS
         //PROPERTIES
         public string Name { get; set; }
-        
+        public DateTime timeOfCreation { get; private set; }
         public double Height { get; set; }
         public double Weight { get; set; }
         public double BMI { get => Math.Round(Weight / (Height * Height),1); }
@@ -32,6 +32,7 @@ namespace NutritionClinicLibrary
         public Client(string name, double height, double weight, Dietitian dt, PersonalTrainer pt)
         {
             Name = name;
+            timeOfCreation = DateTime.Now;
             Height = Math.Round(height,2);
             Weight = Math.Round(weight,1);
             PersonalDietitian = dt;
@@ -39,11 +40,27 @@ namespace NutritionClinicLibrary
         }
 
         //METHODS
-        public void DrinkSmoothie()
+        public void Eat(RollingDisplay log)
+        {
+            log.Log($"{PersonalDietitian.Name} says: {PersonalDietitian.PositiveFeedback()}");
+            KcalEatenToday += 500;
+            ProteinEatenToday += 20;
+        }
+
+        public void Train(RollingDisplay log)
+        {
+            log.Log($"{PersonalTrainer.Name} says: {PersonalTrainer.PositiveFeedback()}");
+            KcalEatenToday -= 100;
+        }
+        public void DrinkSmoothie(RollingDisplay log)
         {
             Smoothie smoothie = SmoothieBar.MakeSmoothie();
-            PersonalDietitian.Evaluate(smoothie, this);
-            
+            string feedbackDt = PersonalDietitian.Evaluate(smoothie, this);
+            string feedbackPt = PersonalTrainer.Evaluate(smoothie, this);
+
+            log.Log(feedbackDt);
+            log.Log(feedbackPt);
+
             KcalEatenToday += smoothie.KcalPerportion;
             ProteinEatenToday += smoothie.ProteinPerportion;
 
@@ -60,8 +77,14 @@ namespace NutritionClinicLibrary
             KcalEatenToday -= 500;
         }
 
-        public string CurrentState()
+        public string CurrentState(RollingDisplay log)
         {
+            if(KcalEatenToday > KcalNeedPerDay)
+            {
+                Weight++;
+                log.Log($"{this.Name} ate more calories than calorie need. Weight has increased and calories eaten is reset");
+                KcalEatenToday = 0;
+            }
             return $"Name: {Name}. Height: {Height}. Weight: {Weight}. BMI: {BMI}";  
         }
 
@@ -79,9 +102,5 @@ namespace NutritionClinicLibrary
 
         }
 
-        public void testmethod(BorderedDisplay display)
-        {
-            display.Value="WelcomeToTheSmoothiebar";
-        }
     }
 }

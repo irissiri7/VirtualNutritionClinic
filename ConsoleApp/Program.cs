@@ -10,14 +10,19 @@ namespace ConsoleApp
             //Setting up employees
             Dietitian theDietitian = new Dietitian("Louise", Employee.Positions.Dietitian);
             PersonalTrainer thePersonalTrainer = new PersonalTrainer("Mats", Employee.Positions.PersonalTrainer);
-
             //Setting up clinic
-            NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("LydiaFoundation", theDietitian, thePersonalTrainer);
-            
-            //Setting up clients
-            Client theClient = new Client("Helena", 1.78F, 60.5F, theDietitian, thePersonalTrainer);
+            NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("Kiwi Clinic", theDietitian, thePersonalTrainer);
 
-            theClinic.SignInNewClient(theClient);
+            Client newClient = new Client("Helena", 1.75, 60.5, theDietitian, thePersonalTrainer);
+
+            Console.WriteLine($"Welcome to the {theClinic.Name}. We will help you get fit in no time.");
+            
+            
+            theClinic.SignInNewClient(newClient);
+
+            Console.WriteLine(theClinic.Client.Name);
+
+            
 
         }
     }

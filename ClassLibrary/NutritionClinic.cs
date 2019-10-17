@@ -34,6 +34,7 @@ namespace NutritionClinicLibrary
         //METHODS
         public void SignInNewClient(Client client)
         {
+
             Console.WriteLine($"Welcome {client.Name} to the {Name} clinic!");
             Console.WriteLine("Let us sign you in");
             Console.WriteLine($"Your personal dietitian will be {Dietitian.Name}. He/she will help you with anything food related");

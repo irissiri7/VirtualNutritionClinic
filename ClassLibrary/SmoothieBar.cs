@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ConsoleSimulationEngine2000;
 
 namespace NutritionClinicLibrary
 {
@@ -8,20 +9,13 @@ namespace NutritionClinicLibrary
     {
         public static Smoothie MakeSmoothie()
         {
-            Console.WriteLine("Welcome to the smoothiebar! Here you get to pick two ingredients for you smoothie");
-            Console.WriteLine("This is our available ingredients: \n[1]Apple\n[2]Banana\n[3]Spinach\n[4]Milk\n[5]Full fat cream\n[6]Chocolate\n[7]Peanuts");
-            Console.WriteLine("Pick your first ingredient");
-            string choice1 = Console.ReadLine();
-            Console.WriteLine("Pick your second ingredient");
-            string choice2 = Console.ReadLine();
-
-            Food choice1AsFood = ConvertToFood(choice1);
-            Food choice2AsFood = ConvertToFood(choice2);
+            Food choice1AsFood = GenerateRandomIngredient();
+            Food choice2AsFood = GenerateRandomIngredient();
 
             return new Smoothie(choice1AsFood, choice2AsFood);
         }
 
-        private static Food ConvertToFood(string choice)
+        private static Food GenerateRandomIngredient()
         {
             //Ingrediens inventory
             Food apple = new Food(50, 5);
@@ -32,8 +26,8 @@ namespace NutritionClinicLibrary
             Food chocolate = new Food(250, 5);
             Food peanuts = new Food(500, 55);
 
-            int caseSwitch = int.Parse(choice);
-
+            Random r = new Random();
+            int caseSwitch = r.Next(1, 8);
             Food foodToReturn = null;
 
             switch (caseSwitch)

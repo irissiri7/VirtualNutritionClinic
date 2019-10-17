@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ConsoleSimulationEngine2000;
 
 namespace NutritionClinicLibrary
 {
@@ -14,19 +15,19 @@ namespace NutritionClinicLibrary
         }
 
         //METHODS
-        public void GiveAdvice(Client someClient)
+        public void GiveAdvice(Client someClient, RollingDisplay display)
         {
             if (someClient.BMI > 25.0F)
             {
-                Console.WriteLine("You should choose low calorie foods");
+                display.Log ($"{Name}: You should choose low calorie foods");
             }
             else if (someClient.BMI < 18.5F)
             {
-                Console.WriteLine("You should choose high calorie foods");
+                display.Log($"{Name}: You should choose high calorie foods");
             }
             else
             {
-                Console.WriteLine("You should probably vary between low and high calorie foods");
+                display.Log($"{Name}: You should probably vary between low and high calorie foods");
             }
         }
         public float CalculateIdealWeight(Client someClient)
@@ -57,15 +58,19 @@ namespace NutritionClinicLibrary
             }
         }
 
-        public void Evaluate(Smoothie someSmoothie, Client someClient)
+        public string Evaluate(Smoothie someSmoothie, Client someClient)
         {
-            if((someClient.BMI > 25 && someSmoothie.KcalPerportion > 200) || (someClient.BMI < 18.5 && someSmoothie.KcalPerportion < 100))
+            if((someClient.BMI > 25 && someSmoothie.KcalPerportion > 200))
             {
-                FeedbackGenerator.NotSoPositiveFeedback();
+                return $"{Name} says: Too much calories, go for something lighter next time";
+            }
+            else if(someClient.BMI < 18.5 && someSmoothie.KcalPerportion < 100)
+            {
+                return $"{Name} says: Too little calories, you should have something sturdier!";
             }
             else
             {
-                FeedbackGenerator.PositiveFeedback();
+                return $"{Name} says: " + PositiveFeedback();
 
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ConsoleSimulationEngine2000;
 
 namespace NutritionClinicLibrary
 {
@@ -14,19 +15,19 @@ namespace NutritionClinicLibrary
         }
 
         //METHODS
-        public static void GiveAdvice(Client someClient)
+        public void GiveAdvice(Client someClient, RollingDisplay log )
         {
             if (someClient.BMI > 25.0F)
             {
-                Console.WriteLine("You should choose cardio workouts");
+                log.Log($"{Name} says: You should choose cardio workouts");
             }
             else if (someClient.BMI < 18.0F)
             {
-                Console.WriteLine("You should choose heavy lifting");
+                log.Log($"{Name} says: You should choose heavy lifting");
             }
             else
             {
-                Console.WriteLine("You should vary between cardio and heavy lifting");
+                log.Log($"{Name} says: You should vary between cardio and heavy lifting");
             }
         }
         public double EstimateProteinNeedPerDay(Client someClient)
@@ -38,16 +39,16 @@ namespace NutritionClinicLibrary
             
             return Math.Round(someClient.Weight * 0.8);
         }
-        public void Evaluate(Smoothie someSmoothie, Client someClient)
+        public string Evaluate(Smoothie someSmoothie, Client someClient)
         {
-            double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.1;
+            double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.2;
             if (someSmoothie.ProteinPerportion < proteinGoalPerSmoothie)
             {
-                FeedbackGenerator.NotSoPositiveFeedback();
+                return $"{Name} says: Too little protein in that smoothie.";
             }
             else
             {
-                FeedbackGenerator.PositiveFeedback();
+                return $"{Name} says " + PositiveFeedback();
             }
         }
 

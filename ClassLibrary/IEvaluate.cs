@@ -2,6 +2,6 @@
 {
     internal interface IEvaluate
     {
-        void Evaluate(Smoothie someSmoothie, Client someClient);
+        string Evaluate(Smoothie someSmoothie, Client someClient);
     }
 }
