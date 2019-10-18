@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleSimulationEngine2000;
 
 namespace NutritionClinicLibrary
 {
@@ -9,8 +10,9 @@ namespace NutritionClinicLibrary
         public string Name { get; private set; }
         public Dietitian Dietitian { get; private set; }
         public PersonalTrainer PersonalTrainer { get; set; }
-        public Client Client { get; set; }
-        private List<Client> ClientRecord { get; set; }
+        public Client Client { get; private set; }
+        public List<Client> ClientRecord { get; private set; }
+        
 
         //FIELDS
         //CONSTRUCTOR (SINGELTON)///////////////////////////
@@ -20,6 +22,7 @@ namespace NutritionClinicLibrary
             Name = name;
             Dietitian = dietitian;
             PersonalTrainer = personalTrainer;
+            ClientRecord = new List<Client>();
         }
         public static NutritionClinic CreateNutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {
@@ -32,14 +35,15 @@ namespace NutritionClinicLibrary
         ////////////////////////////////////////////////////////
 
         //METHODS
-        public void SignInNewClient(Client client)
+        public void SignInNewClient(RollingDisplay log, Client client)
         {
 
-            Console.WriteLine($"Welcome {client.Name} to the {Name} clinic!");
-            Console.WriteLine("Let us sign you in");
-            Console.WriteLine($"Your personal dietitian will be {Dietitian.Name}. He/she will help you with anything food related");
-            Console.WriteLine($"Your personal trainer will be {PersonalTrainer.Name}. He/she will help you with anything related to training");
+            log.Log($"Welcome {client.Name} to the {Name} clinic!");
+            log.Log("Let us sign you in");
+            log.Log($"Your personal dietitian will be {Dietitian.Name}. He/she will help you with anything food related");
+            log.Log($"Your personal trainer will be {PersonalTrainer.Name}. He/she will help you with anything related to training");
 
+            ClientRecord.Add(client);
             Client = client;
         }
 

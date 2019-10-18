@@ -55,6 +55,8 @@ namespace NutritionClinicLibrary
         public void DrinkSmoothie(RollingDisplay log)
         {
             Smoothie smoothie = SmoothieBar.MakeSmoothie();
+            log.Log($"You drank a smoothie with {smoothie.IngredientOne.Name} and {smoothie.IngredientTwo.Name}. {Environment.NewLine}" +
+                $"It had {smoothie.KcalPerportion} kcal and {smoothie.ProteinPerportion} g protein {Environment.NewLine}");
             string feedbackDt = PersonalDietitian.Evaluate(smoothie, this);
             string feedbackPt = PersonalTrainer.Evaluate(smoothie, this);
 

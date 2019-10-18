@@ -30,13 +30,13 @@ namespace MattiasSimulator
     public class MySimulation : Simulation
     {
         //private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 45, 1);
-        private RollingDisplay log = new RollingDisplay(0, 1, 90, 9);
-        private BorderedDisplay clinicInfo = new BorderedDisplay(95, 1, 50, 12) {};
-        private BorderedDisplay patientDisplayCurrent = new BorderedDisplay(0, 9, 90, 3) { };
-        private BorderedDisplay patientDisplayGoals = new BorderedDisplay(0, 11, 90, 3) { };
-        private BorderedDisplay patientIntake = new BorderedDisplay(0, 13, 90, 3) { };
-        private BorderedDisplay test = new BorderedDisplay(0, 15, 90, 6) { };
-        private BorderedDisplay clockDisplay = new BorderedDisplay(0, 18, 20, 3) { };
+        private RollingDisplay messageBoardBox = new RollingDisplay(0, 2, 90, 9);
+        private BorderedDisplay clinicInfoBox = new BorderedDisplay(95, 2, 50, 12) {};
+        private BorderedDisplay patientInfoBox = new BorderedDisplay(0, 10, 90, 3) { };
+        private BorderedDisplay patientGoalsBox = new BorderedDisplay(0, 12, 90, 3) { };
+        private BorderedDisplay patientIntakeBox = new BorderedDisplay(0, 14, 90, 3) { };
+        private BorderedDisplay commandBox = new BorderedDisplay(0, 16, 90, 6) { };
+        private BorderedDisplay clockDisplay = new BorderedDisplay(0, 19, 20, 3) { };
 
         private readonly ConsoleGUI gui;
         private readonly TextInput input;
@@ -51,19 +51,19 @@ namespace MattiasSimulator
 
         public override List<BaseDisplay> Displays => new List<BaseDisplay>() {
         //headerMessageBoard,
-        log,
-        patientDisplayCurrent,
-        patientDisplayGoals,
-        patientIntake,
-        test,
+        messageBoardBox,
+        patientInfoBox,
+        patientGoalsBox,
+        patientIntakeBox,
+        commandBox,
         clockDisplay,
-        clinicInfo,
+        clinicInfoBox,
         input.CreateDisplay(0, -3, -1) };
 
         public MySimulation(ConsoleGUI gui, TextInput input, NutritionClinic theClinic, Dietitian dt, PersonalTrainer pt, Client cl)
         {
-            log.Log($"Welcome to the {theClinic.Name} nutrition clinic!");
-            log.Log($"Everyday we take in a new client, and it's up to you to get him/her {Environment.NewLine}back in shape in 24 hours!");
+            messageBoardBox.Log($"Welcome to the {theClinic.Name} nutrition clinic!");
+            messageBoardBox.Log($"Everyday we take in a new client, and it's up to you to get him/her {Environment.NewLine}back in shape in 24 hours!");
             this.gui = gui;
             this.input = input;
             startTime = DateTime.Now;
@@ -80,47 +80,57 @@ namespace MattiasSimulator
         /// <param name="deltaTime"></param>
         public override void PassTime(int deltaTime)
         {
-            runningTime = runningTime.AddMinutes(120).AddMilliseconds(deltaTime);
+            runningTime = runningTime.AddMinutes(60).AddMilliseconds(deltaTime);
+            
             if(runningTime.Day > startTime.Day)
             {
-                log.Log("It's a new day");
+                messageBoardBox.Log("It's a new day");
                 startTime = runningTime;
                 theClient = GenerateRandomClient();
+                theClinic.SignInNewClient(messageBoardBox,theClient);
             }
-            log.Log("");
-            clinicInfo.Value = $"Staff information: {Environment.NewLine}Dietitian {theDietitian.Name} {Environment.NewLine}Personal trainer {thePersonalTrainer.Name}"; 
-            test.Value = $"Available commands: Press [1] Eat, [2] Train {Environment.NewLine}[3] Get dietitians advice [4] Get PTs advice";
+            
+            clinicInfoBox.Value = 
+                $"Clinic Name : {theClinic.Name}{Environment.NewLine}{Environment.NewLine}" +
+                $"Staff information: {Environment.NewLine}" +
+                $"Dietitian: {theDietitian.Name} {Environment.NewLine}" +
+                $"Personal trainer: {thePersonalTrainer.Name} {Environment.NewLine}{Environment.NewLine}" +
+                $"Clients helped: {theClinic.ClientRecord.Count}"; 
+            
+            commandBox.Value = $"Available commands: Press [1] Eat, [2] Train {Environment.NewLine}[3] Get dietitians advice [4] Get PTs advice [5] Drink Random Smoothie";
+            
+            patientInfoBox.Value = "CURRENT CLIENT: " + theClient.CurrentState(messageBoardBox);
+            patientGoalsBox.Value = "CLIENT GOALS: " + theClient.Goals();
+            patientIntakeBox.Value = "TODAYS INTAKE " + theClient.TodaysIntake();
             
             clockDisplay.Value = runningTime.ToString("HH:mm:ss");
-            patientDisplayCurrent.Value = "CURRENT CLIENT: " + theClient.CurrentState(log);
-            patientDisplayGoals.Value = "CLIENT GOALS: " + theClient.Goals();
-            patientIntake.Value = "TODAYS INTAKE " + theClient.TodaysIntake();
 
-            
+            messageBoardBox.Log("");
+
             while (input.HasInput)
             {
                 string command = input.Consume();
                 if(command == "1")
                 {
-                    log.Log($"{theClient.Name} ate");
-                    theClient.Eat(log);
+                    messageBoardBox.Log($"{theClient.Name} ate");
+                    theClient.Eat(messageBoardBox);
                 }
                 else if(command == "2")
                 {
-                    log.Log($"{theClient.Name} trained");
-                    theClient.Train(log);
+                    messageBoardBox.Log($"{theClient.Name} trained");
+                    theClient.Train(messageBoardBox);
                 }
                 else if(command == "3")
                 {
-                    theDietitian.GiveAdvice(theClient, log);
+                    theDietitian.GiveAdvice(theClient, messageBoardBox);
                 }
                 else if (command == "4")
                 {
-                    thePersonalTrainer.GiveAdvice(theClient, log);
+                    thePersonalTrainer.GiveAdvice(theClient, messageBoardBox);
                 }
                 else if(command == "5")
                 {
-                    theClient.DrinkSmoothie(log);
+                    theClient.DrinkSmoothie(messageBoardBox);
                 }
             }
         }
@@ -129,7 +139,7 @@ namespace MattiasSimulator
         {
             Random r = new Random();
 
-            return new Client(GenerateName(r.Next(4,10)), r.Next(14, 19) / 10, r.Next(300, 2000) / 10, theDietitian, thePersonalTrainer);
+            return new Client(GenerateName(r.Next(4,10)), (Math.Round((r.Next(140, 190) / 100.0),2)), r.Next(300, 2000) / 10, theDietitian, thePersonalTrainer);
         }
 
         public static string GenerateName(int len)
