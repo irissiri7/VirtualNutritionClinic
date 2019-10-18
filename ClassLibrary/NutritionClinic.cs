@@ -10,7 +10,7 @@ namespace NutritionClinicLibrary
         public string Name { get; private set; }
         public Dietitian Dietitian { get; private set; }
         public PersonalTrainer PersonalTrainer { get; set; }
-        public Client Client { get; private set; }
+        public Client CurrentClient { get; private set; }
         public List<Client> ClientRecord { get; private set; }
         
 
@@ -39,12 +39,13 @@ namespace NutritionClinicLibrary
         {
 
             log.Log($"Welcome {client.Name} to the {Name} clinic!");
-            log.Log("Let us sign you in");
-            log.Log($"Your personal dietitian will be {Dietitian.Name}. He/she will help you with anything food related");
-            log.Log($"Your personal trainer will be {PersonalTrainer.Name}. He/she will help you with anything related to training");
+            log.Log("Let sign you in");
+            log.Log($"Your personal dietitian will be {Dietitian.Name}.");
+            log.Log($"Your personal trainer will be {PersonalTrainer.Name}.");
+            log.Log($"Enjoy your stay!");
 
             ClientRecord.Add(client);
-            Client = client;
+            CurrentClient = client;
         }
 
     }

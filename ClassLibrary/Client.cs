@@ -46,7 +46,6 @@ namespace NutritionClinicLibrary
             KcalEatenToday += 500;
             ProteinEatenToday += 20;
         }
-
         public void Train(RollingDisplay log)
         {
             log.Log($"{PersonalTrainer.Name} says: {PersonalTrainer.PositiveFeedback()}");
@@ -65,41 +64,34 @@ namespace NutritionClinicLibrary
 
             KcalEatenToday += smoothie.KcalPerportion;
             ProteinEatenToday += smoothie.ProteinPerportion;
-
-
         }
-
-        public void DoHeavyLifting()
-        {
-            KcalEatenToday -= 250;
-        }
-
-        public void DoCardio()
-        {
-            KcalEatenToday -= 500;
-        }
-
         public string CurrentState(RollingDisplay log)
         {
             if(KcalEatenToday > KcalNeedPerDay)
             {
                 Weight++;
-                log.Log($"{this.Name} ate more calories than calorie need. Weight has increased and calories eaten is reset");
+                log.Log($"{this.Name} ate more calories than calorie need. Weight has increased.");
+                log.Log($"Calories eaten has been reset");
                 KcalEatenToday = 0;
             }
-            return $"Name: {Name}. Height: {Height}. Weight: {Weight}. BMI: {BMI}";  
-        }
+            if(KcalEatenToday < 0)
+            {
+                log.Log($"{this.Name} ate less calories than calorie need. Weight has decreased.");
+                log.Log($"Calories eaten has been reset");
+                KcalEatenToday = 0;
 
+            }
+            return $"Name: {Name}. {Environment.NewLine}Height: {Height}. {Environment.NewLine}Weight: {Weight}. {Environment.NewLine}BMI: {BMI}";  
+        }
         public string Goals()
         {
-            return $"Ideal weight: {IdealWeight}. Kcal/day: {KcalNeedPerDay} kcal. Protein/day {ProteinNeedPerDay} g.";
+            return $"Ideal weight: {IdealWeight}. {Environment.NewLine}Kcal/day: {KcalNeedPerDay} kcal. {Environment.NewLine}Protein/day {ProteinNeedPerDay} g.";
 
 
         }
-
         public string TodaysIntake()
         {
-            return $"Kcal: {KcalEatenToday} kcal. Protein: {ProteinEatenToday} g.";
+            return $"Kcal: {KcalEatenToday} kcal. {Environment.NewLine}Protein: {ProteinEatenToday} g.";
 
 
         }

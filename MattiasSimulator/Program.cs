@@ -12,16 +12,12 @@ namespace MattiasSimulator
             //Setting up employees
             Dietitian theDietitian = new Dietitian("Louise", Employee.Positions.Dietitian);
             PersonalTrainer thePersonalTrainer = new PersonalTrainer("Mats", Employee.Positions.PersonalTrainer);
-
             //Setting up clinic
             NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("Mayo Foundation", theDietitian, thePersonalTrainer);
 
-            //Setting up client
-            Client theClient = new Client("Helena", 1.78F, 60.5F, theDietitian, thePersonalTrainer);
-
             var input = new TextInput();
             var gui = new ConsoleGUI() { Input = input };
-            var sim = new MySimulation(gui, input, theClinic, theDietitian, thePersonalTrainer, theClient);
+            var sim = new MySimulation(gui, input, theClinic);
             await gui.Start(sim);
 
         }
@@ -29,14 +25,12 @@ namespace MattiasSimulator
 
     public class MySimulation : Simulation
     {
-        //private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 45, 1);
-        private RollingDisplay messageBoardBox = new RollingDisplay(0, 2, 90, 9);
-        private BorderedDisplay clinicInfoBox = new BorderedDisplay(95, 2, 50, 12) {};
-        private BorderedDisplay patientInfoBox = new BorderedDisplay(0, 10, 90, 3) { };
-        private BorderedDisplay patientGoalsBox = new BorderedDisplay(0, 12, 90, 3) { };
-        private BorderedDisplay patientIntakeBox = new BorderedDisplay(0, 14, 90, 3) { };
-        private BorderedDisplay commandBox = new BorderedDisplay(0, 16, 90, 6) { };
-        private BorderedDisplay clockDisplay = new BorderedDisplay(0, 19, 20, 3) { };
+        private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 90, 9);
+        private RollingDisplay messageBoardBox = new RollingDisplay(0, 3, 90, 9);
+        private BorderedDisplay commandBox = new BorderedDisplay(0, 11, 90, 9) {};
+        private BorderedDisplay patientInfoBox = new BorderedDisplay(95, 3, 50, 20) { };
+        private BorderedDisplay clinicInfoBox = new BorderedDisplay(0, 17, 90, 6) { };
+        private BorderedDisplay clockDisplay = new BorderedDisplay(95, 20, 50, 3) { };
 
         private readonly ConsoleGUI gui;
         private readonly TextInput input;
@@ -44,34 +38,32 @@ namespace MattiasSimulator
         private DateTime startTime;
         private DateTime runningTime;
 
-        private Dietitian theDietitian;
-        private PersonalTrainer thePersonalTrainer;
-        private NutritionClinic theClinic;
-        private Client theClient;
+        private Dietitian theDietitian { get => theClinic.Dietitian; }
+        private PersonalTrainer thePersonalTrainer { get => theClinic.PersonalTrainer; }
+        private NutritionClinic theClinic { get; set; }
+        private Client CurrentClient { get => theClinic.CurrentClient; }
 
         public override List<BaseDisplay> Displays => new List<BaseDisplay>() {
-        //headerMessageBoard,
+        headerMessageBoard,
         messageBoardBox,
         patientInfoBox,
-        patientGoalsBox,
-        patientIntakeBox,
-        commandBox,
-        clockDisplay,
         clinicInfoBox,
+        clockDisplay,
+        commandBox,
         input.CreateDisplay(0, -3, -1) };
 
-        public MySimulation(ConsoleGUI gui, TextInput input, NutritionClinic theClinic, Dietitian dt, PersonalTrainer pt, Client cl)
+        public MySimulation(ConsoleGUI gui, TextInput input, NutritionClinic theClinic)
         {
-            messageBoardBox.Log($"Welcome to the {theClinic.Name} nutrition clinic!");
-            messageBoardBox.Log($"Everyday we take in a new client, and it's up to you to get him/her {Environment.NewLine}back in shape in 24 hours!");
             this.gui = gui;
             this.input = input;
             startTime = DateTime.Now;
             runningTime = DateTime.Now;
             this.theClinic = theClinic;
-            this.theDietitian = dt;
-            this.thePersonalTrainer = pt;
-            this.theClient = cl;
+            
+            messageBoardBox.Log($"Welcome to the {theClinic.Name} nutrition clinic!");
+            messageBoardBox.Log($"Everyday we take in a new client, and it's up to you to get him/her " +
+                $"{Environment.NewLine}back in shape in 24 hours! Lets see who will be out first client...{Environment.NewLine}");
+            theClinic.SignInNewClient(messageBoardBox, GenerateRandomClient());
 
         }
         /// <summary>
@@ -84,10 +76,9 @@ namespace MattiasSimulator
             
             if(runningTime.Day > startTime.Day)
             {
-                messageBoardBox.Log("It's a new day");
+                messageBoardBox.Log("It's a new day!");
                 startTime = runningTime;
-                theClient = GenerateRandomClient();
-                theClinic.SignInNewClient(messageBoardBox,theClient);
+                theClinic.SignInNewClient(messageBoardBox, GenerateRandomClient());
             }
             
             clinicInfoBox.Value = 
@@ -99,9 +90,7 @@ namespace MattiasSimulator
             
             commandBox.Value = $"Available commands: Press [1] Eat, [2] Train {Environment.NewLine}[3] Get dietitians advice [4] Get PTs advice [5] Drink Random Smoothie";
             
-            patientInfoBox.Value = "CURRENT CLIENT: " + theClient.CurrentState(messageBoardBox);
-            patientGoalsBox.Value = "CLIENT GOALS: " + theClient.Goals();
-            patientIntakeBox.Value = "TODAYS INTAKE " + theClient.TodaysIntake();
+            patientInfoBox.Value = $"CURRENT CLIENT: {Environment.NewLine}{CurrentClient.CurrentState(messageBoardBox)}{Environment.NewLine}{Environment.NewLine}CLIENT GOALS: {Environment.NewLine}{CurrentClient.Goals()}{Environment.NewLine}{Environment.NewLine}TODAYS INTAKE:{Environment.NewLine}{CurrentClient.TodaysIntake()}";
             
             clockDisplay.Value = runningTime.ToString("HH:mm:ss");
 
@@ -112,25 +101,25 @@ namespace MattiasSimulator
                 string command = input.Consume();
                 if(command == "1")
                 {
-                    messageBoardBox.Log($"{theClient.Name} ate");
-                    theClient.Eat(messageBoardBox);
+                    messageBoardBox.Log($"{CurrentClient.Name} ate");
+                    CurrentClient.Eat(messageBoardBox);
                 }
                 else if(command == "2")
                 {
-                    messageBoardBox.Log($"{theClient.Name} trained");
-                    theClient.Train(messageBoardBox);
+                    messageBoardBox.Log($"{CurrentClient.Name} trained");
+                    CurrentClient.Train(messageBoardBox);
                 }
                 else if(command == "3")
                 {
-                    theDietitian.GiveAdvice(theClient, messageBoardBox);
+                    theDietitian.GiveAdvice(CurrentClient, messageBoardBox);
                 }
                 else if (command == "4")
                 {
-                    thePersonalTrainer.GiveAdvice(theClient, messageBoardBox);
+                    thePersonalTrainer.GiveAdvice(CurrentClient, messageBoardBox);
                 }
                 else if(command == "5")
                 {
-                    theClient.DrinkSmoothie(messageBoardBox);
+                    CurrentClient.DrinkSmoothie(messageBoardBox);
                 }
             }
         }

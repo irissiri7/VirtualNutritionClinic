@@ -18,9 +18,8 @@ namespace ConsoleApp
             Console.WriteLine($"Welcome to the {theClinic.Name}. We will help you get fit in no time.");
             
             
-            theClinic.SignInNewClient(newClient);
 
-            Console.WriteLine(theClinic.Client.Name);
+            Console.WriteLine(theClinic.CurrentClient.Name);
 
             
 
