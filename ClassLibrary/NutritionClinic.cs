@@ -35,17 +35,16 @@ namespace NutritionClinicLibrary
         ////////////////////////////////////////////////////////
 
         //METHODS
-        public void SignInNewClient(RollingDisplay log, Client client)
+        public string SignInNewClient(Client client)
         {
-
-            log.Log($"Welcome {client.Name} to the {Name} clinic!");
-            log.Log("Let sign you in");
-            log.Log($"Your personal dietitian will be {Dietitian.Name}.");
-            log.Log($"Your personal trainer will be {PersonalTrainer.Name}.");
-            log.Log($"Enjoy your stay!");
-
             ClientRecord.Add(client);
             CurrentClient = client;
+
+            return 
+                $"Welcome {client.Name} to the {Name} clinic! {Environment.NewLine}" +
+                $"Your personal dietitian will be {Dietitian.Name}.{Environment.NewLine}" +
+                $"Your personal trainer will be {PersonalTrainer.Name}.{Environment.NewLine}" +
+                $"Enjoy your stay!";
         }
 
     }

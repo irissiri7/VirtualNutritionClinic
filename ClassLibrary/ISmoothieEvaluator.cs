@@ -1,6 +1,6 @@
 ﻿namespace NutritionClinicLibrary
 {
-    internal interface IEvaluate
+    internal interface ISmoothieEvaluator
     {
         string Evaluate(Smoothie someSmoothie, Client someClient);
     }

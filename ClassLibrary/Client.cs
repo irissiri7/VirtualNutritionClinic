@@ -7,15 +7,12 @@ namespace NutritionClinicLibrary
 {
     public class Client
     {
-        //FIELDS
         //PROPERTIES
         public string Name { get; set; }
-        public DateTime timeOfCreation { get; private set; }
         public double Height { get; set; }
         public double Weight { get; set; }
-        public double BMI { get => Math.Round(Weight / (Height * Height),1); }
-        public double IdealWeight { get => Math.Round(25 * (Height * Height),1); }
-
+        public double BMI => Math.Round(Weight / (Height * Height), 1);
+        public double IdealWeight { get => Math.Round(25 * (Height * Height), 1); }
 
         public Dietitian PersonalDietitian { get; set; }
         public PersonalTrainer PersonalTrainer { get; set; }
@@ -32,56 +29,70 @@ namespace NutritionClinicLibrary
         public Client(string name, double height, double weight, Dietitian dt, PersonalTrainer pt)
         {
             Name = name;
-            timeOfCreation = DateTime.Now;
-            Height = Math.Round(height,2);
-            Weight = Math.Round(weight,1);
+            Height = Math.Round(height, 2);
+            Weight = Math.Round(weight, 1);
             PersonalDietitian = dt;
             PersonalTrainer = pt;
         }
 
         //METHODS
-        public void Eat(RollingDisplay log)
+        public string Train()
         {
-            log.Log($"{PersonalDietitian.Name} says: {PersonalDietitian.PositiveFeedback()}");
-            KcalEatenToday += 500;
-            ProteinEatenToday += 20;
-        }
-        public void Train(RollingDisplay log)
-        {
-            log.Log($"{PersonalTrainer.Name} says: {PersonalTrainer.PositiveFeedback()}");
             KcalEatenToday -= 100;
+            return $"{PersonalTrainer.Name} says: {PersonalTrainer.PositiveFeedback()}";
+
         }
-        public void DrinkSmoothie(RollingDisplay log)
+        public string DrinkRandomSmoothie()
         {
             Smoothie smoothie = SmoothieBar.MakeSmoothie();
-            log.Log($"You drank a smoothie with {smoothie.IngredientOne.Name} and {smoothie.IngredientTwo.Name}. {Environment.NewLine}" +
-                $"It had {smoothie.KcalPerportion} kcal and {smoothie.ProteinPerportion} g protein {Environment.NewLine}");
-            string feedbackDt = PersonalDietitian.Evaluate(smoothie, this);
-            string feedbackPt = PersonalTrainer.Evaluate(smoothie, this);
-
-            log.Log(feedbackDt);
-            log.Log(feedbackPt);
-
             KcalEatenToday += smoothie.KcalPerportion;
             ProteinEatenToday += smoothie.ProteinPerportion;
+
+            return $"{Name} drank a smoothie with {smoothie.IngredientOne.Name} and {smoothie.IngredientTwo.Name}. {Environment.NewLine}" +
+                $"It had {smoothie.KcalPerportion} kcal and {smoothie.ProteinPerportion} g protein {Environment.NewLine}" +
+                $"{PersonalDietitian.Name} says: {PersonalDietitian.Evaluate(smoothie, this)} {Environment.NewLine}" +
+                $"{PersonalTrainer.Name} says: {PersonalTrainer.Evaluate(smoothie, this)} {Environment.NewLine}";
         }
-        public string CurrentState(RollingDisplay log)
+
+        public string DrinkCustomMadeSmoothie(Food food1, Food food2)
         {
-            if(KcalEatenToday > KcalNeedPerDay)
+            Smoothie smoothie = SmoothieBar.MakeSmoothie(food1, food2);
+            KcalEatenToday += smoothie.KcalPerportion;
+            ProteinEatenToday += smoothie.ProteinPerportion;
+
+            return $"{Name} drank a smoothie with {smoothie.IngredientOne.Name} and {smoothie.IngredientTwo.Name}. {Environment.NewLine}" +
+                $"It had {smoothie.KcalPerportion} kcal and {smoothie.ProteinPerportion} g protein {Environment.NewLine}" +
+                $"{PersonalDietitian.Name} says: {PersonalDietitian.Evaluate(smoothie, this)} {Environment.NewLine}" +
+                $"{PersonalTrainer.Name} says: {PersonalTrainer.Evaluate(smoothie, this)} {Environment.NewLine}";
+        }
+        public string ChekingCurrentIntake()
+        {
+            if (KcalEatenToday > KcalNeedPerDay)
             {
                 Weight++;
-                log.Log($"{this.Name} ate more calories than calorie need. Weight has increased.");
-                log.Log($"Calories eaten has been reset");
                 KcalEatenToday = 0;
+                return $"{this.Name} ate more calories than calorie need { Environment.NewLine}" +
+                    $"Weight has increased 5 kg and calories has been reset.";
             }
-            if(KcalEatenToday < 0)
+            else if (KcalEatenToday < KcalNeedPerDay)
             {
-                log.Log($"{this.Name} ate less calories than calorie need. Weight has decreased.");
-                log.Log($"Calories eaten has been reset");
                 KcalEatenToday = 0;
-
+                Weight--;
+                return $"{this.Name} ate less calories than calorie need. {Environment.NewLine}" +
+                    $"Weight has decreased 5 kg and calories has been reset.";
             }
-            return $"Name: {Name}. {Environment.NewLine}Height: {Height}. {Environment.NewLine}Weight: {Weight}. {Environment.NewLine}BMI: {BMI}";  
+            else
+            {
+                return "Calorie intake is equal to calorie need. Weight is unchanged";
+            }
+        }
+        public bool NeedsHozpitalization()
+        {
+            return BMI < 12;
+        }
+        public string CurrentState()
+        {
+            return $"Name: {Name}. {Environment.NewLine}Height: {Height}. {Environment.NewLine}Weight: {Weight}. {Environment.NewLine}BMI: {BMI}";
         }
         public string Goals()
         {
@@ -94,6 +105,10 @@ namespace NutritionClinicLibrary
             return $"Kcal: {KcalEatenToday} kcal. {Environment.NewLine}Protein: {ProteinEatenToday} g.";
 
 
+        }
+        public bool HasReachedNormalWeight()
+        {
+            return BMI > 18.5 && BMI < 25;
         }
 
     }

@@ -77,6 +77,7 @@ namespace NutritionClinicLibrary
             }
         }
 
-        public abstract void Introduction();
+        public abstract string Introduction();
+        public abstract string GiveAdvice(Client someClient);
     }
 }

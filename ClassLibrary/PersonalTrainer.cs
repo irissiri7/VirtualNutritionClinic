@@ -5,7 +5,7 @@ using ConsoleSimulationEngine2000;
 
 namespace NutritionClinicLibrary
 {
-    public class PersonalTrainer : Employee, IEvaluate
+    public class PersonalTrainer : Employee, ISmoothieEvaluator
     {
         //PROPERTIES
         //FIELDS
@@ -15,19 +15,19 @@ namespace NutritionClinicLibrary
         }
 
         //METHODS
-        public void GiveAdvice(Client someClient, RollingDisplay log )
+        public override string GiveAdvice(Client someClient)
         {
             if (someClient.BMI > 25.0F)
             {
-                log.Log($"{Name} says: You should choose cardio workouts");
+                return $"{Name} says: You should choose cardio workouts";
             }
             else if (someClient.BMI < 18.0F)
             {
-                log.Log($"{Name} says: You should choose heavy lifting");
+                return $"{Name} says: You should choose heavy lifting";
             }
             else
             {
-                log.Log($"{Name} says: You should vary between cardio and heavy lifting");
+                return $"{Name} says: You should vary between cardio and heavy lifting";
             }
         }
         public double EstimateProteinNeedPerDay(Client someClient)
@@ -44,17 +44,17 @@ namespace NutritionClinicLibrary
             double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.2;
             if (someSmoothie.ProteinPerportion < proteinGoalPerSmoothie)
             {
-                return $"{Name} says: Too little protein in that smoothie.";
+                return "Too little protein in that smoothie.";
             }
             else
             {
-                return $"{Name} says " + PositiveFeedback();
+                return $"{PositiveFeedback()}";
             }
         }
 
-        public override void Introduction()
+        public override string Introduction()
         {
-            Console.WriteLine($"Hi! My name is {this.Name} and I love working out!");
+            return $"Hi! My name is {this.Name} and I love working out!";
 
         }
     }
