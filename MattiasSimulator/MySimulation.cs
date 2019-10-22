@@ -61,7 +61,7 @@ namespace MattiasSimulator
 
         public override void PassTime(int deltaTime)
         {
-            runningTime = runningTime.AddMinutes(120).AddMilliseconds(deltaTime);
+            runningTime = runningTime.AddMinutes(30).AddMilliseconds(deltaTime);
 
             patientInfo.Value = $"CURRENT CLIENT: {Environment.NewLine}{CurrentClient.GetCurrentState()}{Environment.NewLine}{Environment.NewLine}CLIENT GOALS: {Environment.NewLine}{CurrentClient.GetGoals()}{Environment.NewLine}{Environment.NewLine}TODAYS INTAKE:{Environment.NewLine}{CurrentClient.GetTodaysIntake()}";
             clockDisplay.Value = "Current time: " + runningTime.ToString("HH:mm:ss");

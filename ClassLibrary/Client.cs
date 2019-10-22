@@ -78,6 +78,7 @@ namespace NutritionClinicLibrary
             {
                 Weight += 5;
                 KcalEatenToday = 0;
+                ProteinEatenToday = 0;
                 if (IsOverWeight)
                 {
                     return PrintWeightIncreaseMessage() + Environment.NewLine + PersonalDietitian.RandomNegativeFeedback();
@@ -96,6 +97,7 @@ namespace NutritionClinicLibrary
             {
                 Weight-=5;
                 KcalEatenToday = 0;
+                ProteinEatenToday = 0;
                 if (IsOverWeight)
                 {
                     return PrintWeightDecreaseMessage() + Environment.NewLine + PersonalDietitian.RandomPositiveFeedback();
@@ -117,12 +119,12 @@ namespace NutritionClinicLibrary
         public string PrintWeightIncreaseMessage()
         {
             return $"{this.Name} ate more calories than calorie need.{Environment.NewLine}" + 
-                    $"Weight has increased 5 kg and calories has been reset.";
+                    $"Weight has increased 5 kg and prevoius intakes has been reset.";
         }
         public string PrintWeightDecreaseMessage()
         {
             return $"{this.Name} ate less calories than calorie need.{Environment.NewLine}" +
-                    $"Weight has decreased 5 kg and calories has been reset.";
+                    $"Weight has decreased 5 kg and prevoius intakes has been reset.";
         }
         //Bools
         public bool NeedsHozpitalization()

@@ -48,7 +48,7 @@ namespace NutritionClinicLibrary
             }
             else
             {
-                return RandomPositiveFeedback();
+                return $"{Name} says: Good amount of protein in that smoothie!";
             }
         }
         public override string Introduction()
