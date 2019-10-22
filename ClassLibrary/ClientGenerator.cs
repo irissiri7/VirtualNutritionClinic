@@ -12,30 +12,45 @@ namespace NutritionClinicLibrary
             Client randomClient;
             do
             {
-                randomClient = new Client(GenerateRandomName(), (Math.Round((r.Next(140, 190) / 100.0), 2)), r.Next(200, 1500) / 10, dt, pt);
-            } while (randomClient.BMI > 18.5 && randomClient.BMI < 25);
+                var randomHeight = Math.Round((r.Next(140, 190) / 100.0), 2);
+                var randomWeight = r.Next(200, 1000) / 10;
+
+                randomClient = new Client(GenerateRandomName(), randomHeight, randomWeight, dt, pt);
+
+            } while (randomClient.BMI < 12 || (randomClient.BMI > 18.5 && randomClient.BMI < 25));
 
             return randomClient;
         }
 
         private static string GenerateRandomName()
         {
+            List<string> randomNames = new List<string>
+                {
+                    "Dart Vader",
+                    "Lucky Luuk",
+                    "Harry Potter",
+                    "Donald Duck",
+                    "Mattias Nourdqvist",
+                    "Frodo of Baggins",
+                    "Samwise Gamgi",
+                    "Galadriel",
+                    "Keanu Reeves",
+                    "Boba Fet",
+                    "Chewbacha",
+                    "Hermione",
+                    "Micke Mouse",
+                    "Daisy Duck",
+                    "Pippi Longstocking",
+                    "Legolas",
+                    "Yoda",
+                    "Luuk Skywalker",
+                    "Princess Leiah"
+                };
+
             Random r = new Random();
-            string[] consonants = { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x" };
-            string[] vowels = { "a", "e", "i", "o", "u", "ae", "y" };
-            string Name = "";
-            Name += consonants[r.Next(consonants.Length)].ToUpper();
-            Name += vowels[r.Next(vowels.Length)];
-            int b = 2; //b tells how many times a new letter has been added. It's 2 right now because the first two letters are already in the name.
-            int len = r.Next(3, 9);
-            while (b < len)
-            {
-                Name += consonants[r.Next(consonants.Length)];
-                b++;
-                Name += vowels[r.Next(vowels.Length)];
-                b++;
-            }
-            return Name;
+            int randomIndex = r.Next(0, randomNames.Count);
+
+            return randomNames[randomIndex];
         }
     }
 }

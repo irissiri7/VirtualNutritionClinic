@@ -12,7 +12,6 @@ namespace NutritionClinicLibrary
         
         //PROPERTIES
         public string Name { get; private set; }
-        public string Id { get; private set; }
         public Positions Position { get; private set; }
 
         //FIELDS
@@ -20,38 +19,28 @@ namespace NutritionClinicLibrary
         public Employee(string name, Positions position)
         {
             Name = name;
-            Id = GenerateId();
             Position = position;
         }
         //METHODS
-        private string GenerateId()
-        {
-            Random random = new Random();
-            int lengthOfId = 8;
-            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            
-            return new string(Enumerable.Repeat(chars, lengthOfId).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
         public string PositiveFeedback()
         {
             Random r = new Random();
-            int randomNum = r.Next(1, 4);
+            int randomNum = r.Next(1, 5);
             if (randomNum == 1)
             {
-                return "Awesome!";
+                return $"{this.Name} says: Awesome!";
             }
             else if (randomNum == 2)
             {
-                return "Excellent, keep up the good work";
+                return $"{this.Name} says: Excellent, keep up the good work";
             }
             else if (randomNum == 3)
             {
-                return "Great, believe in yourself";
+                return $"{this.Name} says: You're doing great";
             }
             else
             {
-                return "Halleluja, progress!";
+                return $"{this.Name} says: Wohoo, progress!";
             }
         }
 
@@ -61,19 +50,19 @@ namespace NutritionClinicLibrary
             int randomNum = r.Next(1, 4);
             if (randomNum == 1)
             {
-                return "Oh, that's a setback";
+                return $"{this.Name} says: Oh, that's a setback";
             }
             else if (randomNum == 2)
             {
-                return "Well... next time will be better!";
+                return $"{this.Name} says: Well... next time will be better!";
             }
             else if (randomNum == 3)
             {
-                return "It's like tango, two steps forward and one back.";
+                return $"{this.Name} says: It's like tango, two steps forward and one back.";
             }
             else
             {
-                return "Okay, let's fokus harder from now on.";
+                return $"{this.Name} says: Okay, let's fokus harder from now on.";
             }
         }
 

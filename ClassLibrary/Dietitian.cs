@@ -19,15 +19,15 @@ namespace NutritionClinicLibrary
         {
             if (someClient.BMI > 25.0F)
             {
-                return $"{Name}: You should choose low calorie foods";
+                return $"{Name} says: You should choose low calorie foods";
             }
             else if (someClient.BMI < 18.5F)
             {
-                return $"{Name}: You should choose high calorie foods";
+                return $"{Name} says: You should choose high calorie foods";
             }
             else
             {
-                return $"{Name}: You should probably vary between low and high calorie foods";
+                return $"{Name} says: You should probably vary between low and high calorie foods";
             }
         }
         public float CalculateIdealWeight(Client someClient)
@@ -62,15 +62,15 @@ namespace NutritionClinicLibrary
         {
             if((someClient.BMI > 25 && someSmoothie.KcalPerportion > 200))
             {
-                return $"Too much calories, go for something lighter next time";
+                return $"{Name} says: Too much calories, go for something lighter next time";
             }
             else if(someClient.BMI < 18.5 && someSmoothie.KcalPerportion < 100)
             {
-                return $"Too little calories, you should have something sturdier!";
+                return $"{Name} says: Too little calories, you should have something sturdier!";
             }
             else
             {
-                return $"{PositiveFeedback()}";
+                return PositiveFeedback();
 
             }
         }

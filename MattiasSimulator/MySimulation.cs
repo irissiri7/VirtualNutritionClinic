@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using ConsoleSimulationEngine2000;
 using MattiasSimulator.Commands;
 using NutritionClinicLibrary;
+using Pastel;
+using System.Drawing;
 
 namespace MattiasSimulator
 {
     public class MySimulation : Simulation
     {
-        private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 25, 3) { Value = "MESSAGE BOARD" };
-        private RollingDisplay messageBoard = new RollingDisplay(0, 2, 90, 16);
-        private BorderedDisplay commandBox = new BorderedDisplay(0, 17, 90, 15) { };
+        private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 25, 3) { };
+        private RollingDisplay messageBoard = new RollingDisplay(0, 2, 90, 21) { };
+        private BorderedDisplay commandBox = new BorderedDisplay(0, 22, 90, 10) { };
         private BorderedDisplay patientInfo = new BorderedDisplay(95, 2, 50, 20) { };
         private BorderedDisplay clockDisplay = new BorderedDisplay(95, 20, 50, 3) { };
+        private BorderedDisplay clinicInfo = new BorderedDisplay(95, 22, 50, 10) { };
+
 
         private readonly TextInput input;
 
@@ -37,6 +41,7 @@ namespace MattiasSimulator
         patientInfo,
         clockDisplay,
         commandBox,
+        clinicInfo,
         input.CreateDisplay(0, -3, -1) };
 
         public MySimulation(TextInput input, NutritionClinic theClinic)
@@ -56,12 +61,16 @@ namespace MattiasSimulator
 
         public override void PassTime(int deltaTime)
         {
-            runningTime = runningTime.AddMinutes(30).AddMilliseconds(deltaTime);
+            runningTime = runningTime.AddMinutes(120).AddMilliseconds(deltaTime);
+
+            patientInfo.Value = $"CURRENT CLIENT: {Environment.NewLine}{CurrentClient.GetCurrentState()}{Environment.NewLine}{Environment.NewLine}CLIENT GOALS: {Environment.NewLine}{CurrentClient.GetGoals()}{Environment.NewLine}{Environment.NewLine}TODAYS INTAKE:{Environment.NewLine}{CurrentClient.GetTodaysIntake()}";
+            clockDisplay.Value = "Current time: " + runningTime.ToString("HH:mm:ss");
+            clinicInfo.Value = $"CLINIC NAME: {theClinic.Name} {Environment.NewLine}{Environment.NewLine}CLINIC STAFF: {Environment.NewLine}{theDietitian.Position}: {theDietitian.Name} {Environment.NewLine}{thePersonalTrainer.Position}: {thePersonalTrainer.Name} {Environment.NewLine}{Environment.NewLine}CLIENTS HELPED:{Environment.NewLine}{theClinic.ClientRecord.Count - 1}";
 
             if (runningTime.Day > startTime.Day)
             {
                 messageBoard.Log("It's a new day! Let's check the progress:");
-                messageBoard.Log(CurrentClient.ChekingCurrentIntake());
+                messageBoard.Log(CurrentClient.CheckTodaysIntake());
                 startTime = runningTime;
             }
             if (CurrentClient.NeedsHozpitalization())
@@ -70,30 +79,26 @@ namespace MattiasSimulator
                 messageBoard.Log($"{CurrentClient.Name} is dangerouzly underweight and needs hospital care");
                 messageBoard.Log($"Bye {CurrentClient.Name} hope you feel better soon");
                 messageBoard.Log($"Let's sign in a new patient");
-                theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theDietitian, thePersonalTrainer));
+                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theDietitian, thePersonalTrainer)));
             }
             if (CurrentClient.HasReachedNormalWeight())
             {
                 messageBoard.Log("Congrats, the client has reached normal BMI!");
-                messageBoard.Log("We will sign him/her out and sign in a new client");
+                messageBoard.Log($"We will sign him/her out and sign in a new client {Environment.NewLine}");
                 messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theDietitian, thePersonalTrainer)));
             }
 
-            patientInfo.Value = $"CURRENT CLIENT: {Environment.NewLine}{CurrentClient.CurrentState()}{Environment.NewLine}{Environment.NewLine}CLIENT GOALS: {Environment.NewLine}{CurrentClient.Goals()}{Environment.NewLine}{Environment.NewLine}TODAYS INTAKE:{Environment.NewLine}{CurrentClient.TodaysIntake()}";
-            clockDisplay.Value = "Current time: " + runningTime.ToString("HH:mm:ss");
-
-
             if (StandardState)
             {
-                commandBox.Value = ConstructCommandOptions(Commands);
+                headerMessageBoard.Value = "MESSAGE BOARD";
                 messageBoard.Log("");
-
+                commandBox.Value = "Available commands" + Environment.NewLine + ConstructCommandOptions(Commands);
             }
             else
             {
-                messageBoard.Log("Welcome to the smoothiebar!");
-                messageBoard.Log("Pick two ingredients for your smoothie");
-                commandBox.Value = ConstructSmoothieBarOptions(SmoothieBar.Pantry);
+                headerMessageBoard.Value = "**SMOOTHIEBAR**".Pastel(Color.FromArgb(169, 253, 172));
+                messageBoard.Log("");
+                commandBox.Value = "Available ingredients" + Environment.NewLine + ConstructSmoothieBarOptions(SmoothieBar.Pantry).Pastel(Color.FromArgb(169, 253, 172));
             }
 
             while (input.HasInput)
@@ -105,9 +110,10 @@ namespace MattiasSimulator
 
                     if (int.TryParse(command, out indexForCommand))
                     {
-                        if (Commands[indexForCommand].Name.Equals("Drink Custom Made Smoothie"))
+                        if (Commands[indexForCommand].Name.Equals("Drink Smoothie"))
                         {
                             StandardState = false;
+                            messageBoard.Log(Commands[indexForCommand].Execute(theClinic));
 
                         }
                         else
@@ -119,37 +125,50 @@ namespace MattiasSimulator
                 }
                 else
                 {
+                    
                     if (MakeSmoothieState == 0)
                     {
                         choice1 = input.Consume();
                         MakeSmoothieState++;
+                        messageBoard.Log("Pick another ingredient");
                     }
-                    else if(MakeSmoothieState == 1)
+                    else if (MakeSmoothieState == 1)
                     {
                         choice2 = input.Consume();
 
                         if (int.TryParse(choice1, out int index1))
+                        {
                             if (int.TryParse(choice2, out int index2))
                             {
-                                messageBoard.Log(theClinic.CurrentClient.DrinkCustomMadeSmoothie(SmoothieBar.Pantry[index1], SmoothieBar.Pantry[index2]));
+                                messageBoard.Log(theClinic.CurrentClient.DrinkSmoothie(SmoothieBar.Pantry[index1], SmoothieBar.Pantry[index2]));
+                                MakeSmoothieState = 0;
+                                StandardState = true;
                             }
-                        MakeSmoothieState = 0;
-                    }
-  
-                }
+                            else
+                            {
+                                GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar();
+                            }
+                        }
+                        else
+                        {
+                            GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar();
+                        }
 
+                    }
+                    
+
+                }
             }
 
         }
-    
+
         private static void PopulateCommandList(List<ICommand> someList)
         {
             someList.Add(new SayHiToDietitian());
             someList.Add(new SayHiToPT());
             someList.Add(new GetDietitianAdvice());
             someList.Add(new GetPTAdvice());
-            someList.Add(new DrinkRandomSmoothie());
-            someList.Add(new DrinkCustomMadeSmoothie());
+            someList.Add(new DrinkSmoothie());
             someList.Add(new Train());
         }
 
@@ -179,6 +198,14 @@ namespace MattiasSimulator
 
             return commands;
 
+        }
+
+        private void GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar()
+        {
+            messageBoard.Log("Something was wrong with your choices... Did you pick something strange?!");
+            messageBoard.Log("Comeback later and try again");
+            MakeSmoothieState = 0;
+            StandardState = true;
         }
 
     }

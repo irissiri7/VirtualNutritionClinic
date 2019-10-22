@@ -5,13 +5,13 @@ using NutritionClinicLibrary;
 
 namespace MattiasSimulator.Commands
 {
-    public class DrinkCustomMadeSmoothie : ICommand
+    public class DrinkSmoothie : ICommand
     {
-        public string Name => "Drink Custom Made Smoothie";
+        public string Name => "Drink Smoothie";
 
         public string Execute(NutritionClinic someNutClin)
         {
-            return someNutClin.CurrentClient.DrinkRandomSmoothie();
+            return "Welcome to the Smoothie Bar. Pick two ingredients for your smoothie";
 
         }
     }

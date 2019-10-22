@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutritionClinicLibrary", "ClassLibrary\NutritionClinicLibrary.csproj", "{B2BBBF21-ED6A-4D85-8E92-8E7A8B014EA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutritionClinicLibrary", "ClassLibrary\NutritionClinicLibrary.csproj", "{B2BBBF21-ED6A-4D85-8E92-8E7A8B014EA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{AF89122C-8B4B-4A1B-9715-A500C616294D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{AF89122C-8B4B-4A1B-9715-A500C616294D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattiasSimulator", "MattiasSimulator\MattiasSimulator.csproj", "{ABDE0807-B85A-475F-A0EB-85C007CCBD85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattiasSimulator", "MattiasSimulator\MattiasSimulator.csproj", "{ABDE0807-B85A-475F-A0EB-85C007CCBD85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{85BE43F4-A6AE-47B7-9B39-2F18510DD106}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABDE0807-B85A-475F-A0EB-85C007CCBD85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85BE43F4-A6AE-47B7-9B39-2F18510DD106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85BE43F4-A6AE-47B7-9B39-2F18510DD106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85BE43F4-A6AE-47B7-9B39-2F18510DD106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85BE43F4-A6AE-47B7-9B39-2F18510DD106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

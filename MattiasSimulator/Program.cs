@@ -10,10 +10,10 @@ namespace MattiasSimulator
         static async System.Threading.Tasks.Task Main(string[] args)
         {
             //Setting up employees
-            Dietitian theDietitian = new Dietitian("Louise", Employee.Positions.Dietitian);
-            PersonalTrainer thePersonalTrainer = new PersonalTrainer("Mats", Employee.Positions.PersonalTrainer);
+            Dietitian theDietitian = new Dietitian("Mrs Lind", Employee.Positions.Dietitian);
+            PersonalTrainer thePersonalTrainer = new PersonalTrainer("Arnold Schwarzenegger", Employee.Positions.PersonalTrainer);
             //Setting up clinic
-            NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("Mayo Foundation", theDietitian, thePersonalTrainer);
+            NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("Mayonaise Foundation", theDietitian, thePersonalTrainer);
 
             var input = new TextInput();
             var gui = new ConsoleGUI() { Input = input };

@@ -44,17 +44,17 @@ namespace NutritionClinicLibrary
             double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.2;
             if (someSmoothie.ProteinPerportion < proteinGoalPerSmoothie)
             {
-                return "Too little protein in that smoothie.";
+                return $"{Name} says: Too little protein in that smoothie.";
             }
             else
             {
-                return $"{PositiveFeedback()}";
+                return PositiveFeedback();
             }
         }
 
         public override string Introduction()
         {
-            return $"Hi! My name is {this.Name} and I love working out!";
+            return $"Hi! My name is {Name} and I'll make you break some serious sweat!!";
 
         }
     }
