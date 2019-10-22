@@ -55,7 +55,7 @@ namespace MattiasSimulator
 
             messageBoard.Log($"This is the {theClinic.Name} nutrition clinic!");
             messageBoard.Log($"We help people get back in shape. Lets start by signing in a new client!");
-            messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theDietitian, thePersonalTrainer)));
+            messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theClinic)));
 
         }
 
@@ -79,13 +79,13 @@ namespace MattiasSimulator
                 messageBoard.Log($"{CurrentClient.Name} is dangerouzly underweight and needs hospital care");
                 messageBoard.Log($"Bye {CurrentClient.Name} hope you feel better soon");
                 messageBoard.Log($"Let's sign in a new patient");
-                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theDietitian, thePersonalTrainer)));
+                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theClinic)));
             }
             if (CurrentClient.HasReachedNormalWeight())
             {
                 messageBoard.Log("Congrats, the client has reached normal BMI!");
                 messageBoard.Log($"We will sign him/her out and sign in a new client {Environment.NewLine}");
-                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theDietitian, thePersonalTrainer)));
+                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theClinic)));
             }
 
             if (StandardState)

@@ -13,27 +13,17 @@ namespace NutritionClinicLibrary
         public Client CurrentClient { get; private set; }
         public List<Client> ClientRecord { get; private set; }
         
-
         //FIELDS
-        //CONSTRUCTOR (SINGELTON)///////////////////////////
-        private static NutritionClinic instance;
-        private NutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
+
+        //CONSTRUCTOR
+        public NutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {
             Name = name;
             Dietitian = dietitian;
             PersonalTrainer = personalTrainer;
             ClientRecord = new List<Client>();
         }
-        public static NutritionClinic CreateNutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
-        {
-            if(instance == null)
-            {
-                instance = new NutritionClinic(name, dietitian, personalTrainer);
-            }
-            return instance;
-        }
-        ////////////////////////////////////////////////////////
-
+        
         //METHODS
         public string SignInNewClient(Client client)
         {

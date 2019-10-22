@@ -20,24 +20,11 @@ namespace NutritionClinicLibrary
                     new Food("peanuts", 500, 55)
                 };
         }
-            
         
-        public static Smoothie MakeSmoothie()
-        {
-            Food choice1AsFood = GenerateRandomIngredient();
-            Food choice2AsFood = GenerateRandomIngredient();
-
-            return new Smoothie(choice1AsFood, choice2AsFood);
-        }
-
         public static Smoothie MakeSmoothie(Food food1, Food food2)
         {
             return new Smoothie(food1, food2);
         }
 
-        private static Food GenerateRandomIngredient()
-        {
-            return Pantry[new Random().Next(0, Pantry.Count())];
-        }
     }
 }

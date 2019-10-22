@@ -60,24 +60,24 @@ namespace NutritionClinicLibrary
 
         public string Evaluate(Smoothie someSmoothie, Client someClient)
         {
-            if((someClient.BMI > 25 && someSmoothie.KcalPerportion > 200))
+            if((someClient.IsOverWeight && someSmoothie.KcalPerportion > 200))
             {
                 return $"{Name} says: Too much calories, go for something lighter next time";
             }
-            else if(someClient.BMI < 18.5 && someSmoothie.KcalPerportion < 100)
+            else if(someClient.IsUnderWeight && someSmoothie.KcalPerportion < 100)
             {
                 return $"{Name} says: Too little calories, you should have something sturdier!";
             }
             else
             {
-                return PositiveFeedback();
+                return RandomPositiveFeedback();
 
             }
         }
 
         public override string Introduction()
         {
-            return $"Hi! My name is {this.Name} and I will help you with anything and everything regarding food";
+            return $"Hi! My name is {this.Name} and I will help you with everything food related!";
         }
     }
 }

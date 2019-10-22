@@ -39,12 +39,11 @@ namespace NutritionClinicLibrary
         }
 
         //METHODS
-        
         //Actions
         public string Train()
         {
             KcalEatenToday -= 300;
-            return PersonalTrainer.PositiveFeedback();
+            return PersonalTrainer.RandomPositiveFeedback();
 
         }
         public string DrinkSmoothie(Food food1, Food food2)
@@ -81,11 +80,11 @@ namespace NutritionClinicLibrary
                 KcalEatenToday = 0;
                 if (IsOverWeight)
                 {
-                    return PrintWeightIncreaseMessage() + Environment.NewLine + PersonalDietitian.NotSoPositiveFeedback();
+                    return PrintWeightIncreaseMessage() + Environment.NewLine + PersonalDietitian.RandomNegativeFeedback();
                 }
                 else if(IsUnderWeight)
                 {
-                    return PrintWeightIncreaseMessage() + Environment.NewLine + PersonalDietitian.PositiveFeedback();
+                    return PrintWeightIncreaseMessage() + Environment.NewLine + PersonalDietitian.RandomPositiveFeedback();
                 }
                 else
                 {
@@ -99,11 +98,11 @@ namespace NutritionClinicLibrary
                 KcalEatenToday = 0;
                 if (IsOverWeight)
                 {
-                    return PrintWeightDecreaseMessage() + Environment.NewLine + PersonalDietitian.PositiveFeedback();
+                    return PrintWeightDecreaseMessage() + Environment.NewLine + PersonalDietitian.RandomPositiveFeedback();
                 }
                 else if(IsUnderWeight)
                 {
-                    return PrintWeightDecreaseMessage() + Environment.NewLine + PersonalDietitian.NotSoPositiveFeedback();
+                    return PrintWeightDecreaseMessage() + Environment.NewLine + PersonalDietitian.RandomNegativeFeedback();
                 }
                 else
                 {

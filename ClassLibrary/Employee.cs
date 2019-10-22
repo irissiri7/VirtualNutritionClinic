@@ -22,7 +22,10 @@ namespace NutritionClinicLibrary
             Position = position;
         }
         //METHODS
-        public string PositiveFeedback()
+        public abstract string Introduction();
+        public abstract string GiveAdvice(Client someClient);
+
+        public string RandomPositiveFeedback()
         {
             Random r = new Random();
             int randomNum = r.Next(1, 5);
@@ -43,8 +46,7 @@ namespace NutritionClinicLibrary
                 return $"{this.Name} says: Wohoo, progress!";
             }
         }
-
-        public string NotSoPositiveFeedback()
+        public string RandomNegativeFeedback()
         {
             Random r = new Random();
             int randomNum = r.Next(1, 4);
@@ -66,7 +68,5 @@ namespace NutritionClinicLibrary
             }
         }
 
-        public abstract string Introduction();
-        public abstract string GiveAdvice(Client someClient);
     }
 }

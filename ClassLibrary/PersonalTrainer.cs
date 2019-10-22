@@ -48,10 +48,9 @@ namespace NutritionClinicLibrary
             }
             else
             {
-                return PositiveFeedback();
+                return RandomPositiveFeedback();
             }
         }
-
         public override string Introduction()
         {
             return $"Hi! My name is {Name} and I'll make you break some serious sweat!!";

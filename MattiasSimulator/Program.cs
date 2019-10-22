@@ -13,7 +13,7 @@ namespace MattiasSimulator
             Dietitian theDietitian = new Dietitian("Mrs Lind", Employee.Positions.Dietitian);
             PersonalTrainer thePersonalTrainer = new PersonalTrainer("Arnold Schwarzenegger", Employee.Positions.PersonalTrainer);
             //Setting up clinic
-            NutritionClinic theClinic = NutritionClinic.CreateNutritionClinic("Mayonaise Foundation", theDietitian, thePersonalTrainer);
+            NutritionClinic theClinic = new NutritionClinic("Mayonaise Foundation", theDietitian, thePersonalTrainer);
 
             var input = new TextInput();
             var gui = new ConsoleGUI() { Input = input };

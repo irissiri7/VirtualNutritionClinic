@@ -6,7 +6,7 @@ namespace NutritionClinicLibrary
 {
     public class ClientGenerator
     {
-        public static Client GenerateRandomClient(Dietitian dt, PersonalTrainer pt)
+        public static Client GenerateRandomClient(NutritionClinic clinic)
         {
             Random r = new Random();
             Client randomClient;
@@ -15,7 +15,7 @@ namespace NutritionClinicLibrary
                 var randomHeight = Math.Round((r.Next(140, 190) / 100.0), 2);
                 var randomWeight = r.Next(200, 1000) / 10;
 
-                randomClient = new Client(GenerateRandomName(), randomHeight, randomWeight, dt, pt);
+                randomClient = new Client(GenerateRandomName(), randomHeight, randomWeight, clinic.Dietitian, clinic.PersonalTrainer);
 
             } while (randomClient.BMI < 12 || (randomClient.BMI > 18.5 && randomClient.BMI < 25));
 
