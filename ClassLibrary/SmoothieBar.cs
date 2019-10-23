@@ -31,8 +31,6 @@ namespace NutritionClinicLibrary
                     new Food("Chocolate", 250, 5),
                     new Food("Ahlgrens bilar", 350, 3),
                     new Food("Appel cider vinegar", 5, 0),
-                    new Food("Protein powder", 370, 50),
-                    new Food("Duocal", 370, 50),
                 };
         }
 
