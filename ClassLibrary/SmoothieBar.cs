@@ -26,19 +26,5 @@ namespace NutritionClinicLibrary
         {
             return new Smoothie(food1, food2);
         }
-
-        public string ConstructSmoothieBarOptions()
-        {
-            string commands = "";
-            int count = 0;
-            foreach (Food c in Pantry)
-            {
-                commands += $"[{count}] {c.Name} {Environment.NewLine}";
-                count++;
-            }
-
-            return commands;
-        }
-
     }
 }

@@ -6,12 +6,15 @@ namespace MattiasSimulator
 {
     public abstract class State
     {
-        public string Title;
+        public readonly string title;
+        
         public abstract void HandleInput(string input, MySimulation sim);
+        
         public abstract string FillCommandBox(MySimulation sim);
+        
         public State(string title)
         {
-            Title = title;
+            this.title = title;
         }
 
 

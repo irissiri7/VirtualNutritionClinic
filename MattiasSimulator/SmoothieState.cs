@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Pastel;
+using System.Drawing;
 
 namespace MattiasSimulator
 {
@@ -17,7 +19,16 @@ namespace MattiasSimulator
 
         public override string FillCommandBox(MySimulation sim)
         {
-            return sim.theClinic.SmoothieBar.ConstructSmoothieBarOptions();
+            StringBuilder commands = new StringBuilder();
+            commands.Append($"Available Ingredients:{Environment.NewLine}");
+            int count = 0;
+            foreach (Food c in sim.theClinic.SmoothieBar.Pantry)
+            {
+                commands.Append($"[{count}] {c.Name} {Environment.NewLine}");
+                count++;
+            }
+            
+            return commands.ToString().Pastel(Color.FromArgb(132, 226, 150));
         }
 
         public override void HandleInput(string command, MySimulation sim)
@@ -36,7 +47,7 @@ namespace MattiasSimulator
                 {
                     if (int.TryParse(choice2, out int index2))
                     {
-                        sim.messageBoard.Log(sim.theClinic.CurrentClient.DrinkSmoothie(index1, index2, sim.theClinic));
+                        sim.messageBoard.Log(sim.theClinic.CurrentClient.DrinkSmoothie(index1, index2));
                         MakeSmoothieState = 0;
                         sim.simState = new StandardState("MESSAGE BOARD");
                     }

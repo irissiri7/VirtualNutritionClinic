@@ -9,13 +9,11 @@ namespace NutritionClinicLibrary
         //PROPERTIES
         public string Name { get; private set; }
         public Dietitian Dietitian { get; private set; }
-        public PersonalTrainer PersonalTrainer { get; set; }
+        public PersonalTrainer PersonalTrainer { get; private set; }
         public Client CurrentClient { get; private set; }
         public List<Client> ClientRecord { get; private set; }
-        public SmoothieBar SmoothieBar {get; set;}
+        public SmoothieBar SmoothieBar {get; private set;}
         
-        //FIELDS
-
         //CONSTRUCTOR
         public NutritionClinic(string name, Dietitian dietitian, PersonalTrainer personalTrainer)
         {

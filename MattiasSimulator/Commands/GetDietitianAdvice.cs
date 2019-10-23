@@ -9,9 +9,9 @@ namespace MattiasSimulator.Commands
     {
         public string Name => "Get advice from dietitian";
 
-        public string Execute(NutritionClinic someNutClin)
+        public string Execute(MySimulation sim)
         {
-            return someNutClin.Dietitian.GiveAdvice(someNutClin.CurrentClient);
+            return sim.theClinic.Dietitian.GiveAdvice(sim.theClinic.CurrentClient);
         }
     }
 }

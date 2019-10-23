@@ -15,13 +15,17 @@ namespace NutritionClinicLibrary
         }
 
         //METHODS
+        public override string Introduction()
+        {
+            return $"Hi! My name is {this.Name} and I will help you with everything food related!";
+        }
         public override string GiveAdvice(Client someClient)
         {
-            if (someClient.BMI > 25.0F)
+            if (someClient.IsOverWeight)
             {
                 return $"{Name} says: You should choose low calorie foods";
             }
-            else if (someClient.BMI < 18.5F)
+            else if (someClient.IsUnderWeight)
             {
                 return $"{Name} says: You should choose high calorie foods";
             }
@@ -42,11 +46,11 @@ namespace NutritionClinicLibrary
             int kcalNeedPerKgNormalWeight = 30;
             int kcalNeedPerKgUnderWeight = 35;
 
-            if (someClient.BMI > 25.0F)
+            if (someClient.IsOverWeight)
             {
                 return Math.Round(someClient.Weight * kcalNeedPerKgOverWeight);
             }
-            else if (someClient.BMI < 18.5F)
+            else if (someClient.IsUnderWeight)
             {
                 return Math.Round(someClient.Weight * kcalNeedPerKgUnderWeight);
 
@@ -57,7 +61,6 @@ namespace NutritionClinicLibrary
 
             }
         }
-
         public string Evaluate(Smoothie someSmoothie, Client someClient)
         {
             if((someClient.IsOverWeight && someSmoothie.KcalPerportion > 200))
@@ -75,9 +78,6 @@ namespace NutritionClinicLibrary
             }
         }
 
-        public override string Introduction()
-        {
-            return $"Hi! My name is {this.Name} and I will help you with everything food related!";
-        }
+
     }
 }

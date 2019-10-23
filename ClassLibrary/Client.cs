@@ -8,17 +8,18 @@ namespace NutritionClinicLibrary
     public class Client
     {
         //PROPERTIES
-        public string Name { get; set; }
-        public double Height { get; set; }
-        public double Weight { get; set; }
+        public string Name { get; private set; }
+        public double Height { get; private set; }
+        public double Weight { get; private set; }
+        
         public double BMI => Math.Round(Weight / (Height * Height), 1);
         public bool IsOverWeight => BMI > 25;
         public bool IsUnderWeight => BMI < 18.5;
-
         public double IdealWeight => Math.Round(25 * (Height * Height), 1); 
 
-        public Dietitian PersonalDietitian { get; set; }
-        public PersonalTrainer PersonalTrainer { get; set; }
+        public Dietitian PersonalDietitian { get; private set; }
+        public PersonalTrainer PersonalTrainer { get; private set; }
+        public NutritionClinic MyClinic { get; private set; }
 
 
         public double KcalNeedPerDay => PersonalDietitian.EstimateKcalNeedPerDay(this); 
@@ -29,26 +30,26 @@ namespace NutritionClinicLibrary
 
 
         //CONSTRUCTOR
-        public Client(string name, double height, double weight, Dietitian dt, PersonalTrainer pt)
+        public Client(string name, double height, double weight, NutritionClinic clinic)
         {
             Name = name;
             Height = Math.Round(height, 2);
             Weight = Math.Round(weight, 1);
-            PersonalDietitian = dt;
-            PersonalTrainer = pt;
+            MyClinic = clinic;
+            PersonalDietitian = clinic.Dietitian;
+            PersonalTrainer = clinic.PersonalTrainer;
         }
 
         //METHODS
-        //Actions
         public string Train()
         {
             KcalEatenToday -= 300;
             return PersonalTrainer.RandomPositiveFeedback();
 
         }
-        public string DrinkSmoothie(int index1, int index2, NutritionClinic clinic)
+        public string DrinkSmoothie(int index1, int index2)
         {
-            Smoothie smoothie = clinic.SmoothieBar.MakeSmoothie(clinic.SmoothieBar.Pantry[index1], clinic.SmoothieBar.Pantry[index2]);
+            Smoothie smoothie = MyClinic.SmoothieBar.MakeSmoothie(MyClinic.SmoothieBar.Pantry[index1], MyClinic.SmoothieBar.Pantry[index2]);
             KcalEatenToday += smoothie.KcalPerportion;
             ProteinEatenToday += smoothie.ProteinPerportion;
 
@@ -116,14 +117,15 @@ namespace NutritionClinicLibrary
                 return "Calorie intake is equal to calorie need. Weight is unchanged";
             }
         }
+        
         public string PrintWeightIncreaseMessage()
         {
-            return $"{this.Name} ate more calories than calorie need.{Environment.NewLine}" + 
+            return $"{Name} ate more calories than calorie need.{Environment.NewLine}" + 
                     $"Weight has increased 5 kg and prevoius intakes has been reset.";
         }
         public string PrintWeightDecreaseMessage()
         {
-            return $"{this.Name} ate less calories than calorie need.{Environment.NewLine}" +
+            return $"{Name} ate less calories than calorie need.{Environment.NewLine}" +
                     $"Weight has decreased 5 kg and prevoius intakes has been reset.";
         }
         //Bools

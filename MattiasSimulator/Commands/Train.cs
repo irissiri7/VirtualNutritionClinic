@@ -9,9 +9,9 @@ namespace MattiasSimulator
     {
         public string Name => "Train";
 
-        public string Execute(NutritionClinic someNutClin)
+        public string Execute(MySimulation sim)
         {
-            return $"{someNutClin.CurrentClient.Name} trained! {someNutClin.CurrentClient.Train()}";
+            return $"{sim.theClinic.CurrentClient.Name} trained! {sim.theClinic.CurrentClient.Train()}";
         }
     }
 }

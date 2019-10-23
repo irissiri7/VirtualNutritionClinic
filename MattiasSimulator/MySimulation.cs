@@ -25,9 +25,9 @@ namespace MattiasSimulator
         private DateTime startTime;
         private DateTime runningTime;
 
+        public NutritionClinic theClinic { get; set; }
         private Dietitian theDietitian { get => theClinic.Dietitian; }
         private PersonalTrainer thePersonalTrainer { get => theClinic.PersonalTrainer; }
-        public NutritionClinic theClinic { get; set; }
         private Client CurrentClient { get => theClinic.CurrentClient; }
 
         public override List<BaseDisplay> Displays => new List<BaseDisplay>() {
@@ -85,7 +85,7 @@ namespace MattiasSimulator
             }
 
             
-            headerMessageBoard.Value = simState.Title;
+            headerMessageBoard.Value = simState.title;
             commandBox.Value = simState.FillCommandBox(this);
 
             while (input.HasInput)
@@ -107,17 +107,6 @@ namespace MattiasSimulator
             Commands.Add(new Train());
         }
 
-        public string ConstructCommandOptions()
-        {
-            string commands = "";
-            int count = 0;
-            foreach (ICommand c in Commands)
-            {
-                commands += $"[{count}] {c.Name} {Environment.NewLine}";
-                count++;
-            }
-
-            return commands;
-        }
+        
     }
 }

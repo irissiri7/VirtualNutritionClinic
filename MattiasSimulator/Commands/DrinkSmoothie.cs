@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using NutritionClinicLibrary;
+using Pastel;
+using System.Drawing;
 
 namespace MattiasSimulator.Commands
 {
@@ -9,8 +11,9 @@ namespace MattiasSimulator.Commands
     {
         public string Name => "Drink Smoothie";
 
-        public string Execute(NutritionClinic someNutClin)
+        public string Execute(MySimulation sim)
         {
+            sim.simState = new SmoothieState("**SMOOTHIE BAR**");
             return "Welcome to the Smoothie Bar. Pick two ingredients for your smoothie";
 
         }

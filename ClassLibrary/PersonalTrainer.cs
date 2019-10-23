@@ -17,11 +17,11 @@ namespace NutritionClinicLibrary
         //METHODS
         public override string GiveAdvice(Client someClient)
         {
-            if (someClient.BMI > 25.0F)
+            if (someClient.IsOverWeight)
             {
                 return $"{Name} says: You should choose cardio workouts";
             }
-            else if (someClient.BMI < 18.0F)
+            else if (someClient.IsUnderWeight)
             {
                 return $"{Name} says: You should choose heavy lifting";
             }
@@ -32,7 +32,7 @@ namespace NutritionClinicLibrary
         }
         public double EstimateProteinNeedPerDay(Client someClient)
         {
-            if(someClient.BMI < 18.5)
+            if(someClient.IsUnderWeight)
             {
                 return Math.Round(someClient.Weight * 1.5);
             }

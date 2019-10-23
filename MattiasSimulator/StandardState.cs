@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using ConsoleSimulationEngine2000;
 using NutritionClinicLibrary;
+using Pastel;
+using System.Drawing;
 
 namespace MattiasSimulator
 {
@@ -14,25 +16,25 @@ namespace MattiasSimulator
 
         public override string FillCommandBox(MySimulation sim)
         {
-            return sim.ConstructCommandOptions();
+            StringBuilder commands = new StringBuilder();
+            commands.Append($"Available Commands: {Environment.NewLine}");
+            int count = 0;
+            foreach (ICommand c in sim.Commands)
+            {
+                commands.Append($"[{count}] {c.Name} {Environment.NewLine}");
+                count++;
+            }
+
+            return commands.ToString();
         }
 
         public override void HandleInput(string command, MySimulation sim)
         {
-            int indexForCommand;
+            int index;
 
-            if (int.TryParse(command, out indexForCommand))
+            if (int.TryParse(command, out index))
             {
-                if (sim.Commands[indexForCommand].Name.Equals("Drink Smoothie"))
-                {
-                    sim.messageBoard.Log("Welcome to the Smoothie Bar! Pick two ingredients");
-                    sim.simState = new SmoothieState("SMOOTHIE BAR");
-                }
-                else
-                {
-                    sim.messageBoard.Log(sim.Commands[indexForCommand].Execute(sim.theClinic));
-                }
-
+                sim.messageBoard.Log(sim.Commands[index].Execute(sim));
             }
         }
         

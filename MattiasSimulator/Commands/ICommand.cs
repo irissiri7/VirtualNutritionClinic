@@ -9,6 +9,6 @@ namespace MattiasSimulator
     {
         public string Name { get; }
 
-        string Execute(NutritionClinic someNutClin);
+        string Execute(MySimulation sim);
     }
 }

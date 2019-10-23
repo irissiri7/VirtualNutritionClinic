@@ -64,7 +64,7 @@ namespace Tests
             NutritionClinic sutClinic = SetUpTestClinic();
             SignIn10000Clients(sutClinic);
             
-            Client newCurrentClient = new Client("Jane Doe", 1.7, 60, sutClinic.Dietitian, sutClinic.PersonalTrainer);
+            Client newCurrentClient = new Client("Jane Doe", 1.7, 60, sutClinic);
             sutClinic.SignInNewClient(newCurrentClient);
             
             Assert.AreEqual(sutClinic.CurrentClient, newCurrentClient);
@@ -73,11 +73,12 @@ namespace Tests
         [Test]
         public void SmoothieBar_Making10000Smoothies_NutritionValuesAreAlwaysCorrect()
         {
+            NutritionClinic sut = SetUpTestClinic();
             Food testBanana = new Food("banana", 100, 100);
 
             for(int i = 0; i < 10000; i++)
             {
-                Smoothie sutSmoothie = SmoothieBar.MakeSmoothie(testBanana, testBanana);
+                Smoothie sutSmoothie = sut.SmoothieBar.MakeSmoothie(testBanana, testBanana);
                 if(sutSmoothie.KcalPerportion != 200)
                 {
                     Assert.Fail();
@@ -95,7 +96,7 @@ namespace Tests
         public void Client_UnderweightEvaluationJustUnderLimit_IsCorrect()
         {
             NutritionClinic sutClinic = SetUpTestClinic();
-            Client sut = new Client("Jane Doe", 1.7, 53.3, sutClinic.Dietitian, sutClinic.PersonalTrainer); //Which should generate BMI 18.4
+            Client sut = new Client("Jane Doe", 1.7, 53.3, sutClinic); //Which should generate BMI 18.4
             Assert.IsTrue(sut.IsUnderWeight);
         }
 
@@ -103,7 +104,7 @@ namespace Tests
         public void Client_UnderweightEvaluationRightOnTheEdge_IsCorrect()
         {
             NutritionClinic sutClinic = SetUpTestClinic();
-            Client sut = new Client("Jane Doe", 1.7, 53.6, sutClinic.Dietitian, sutClinic.PersonalTrainer); //Which should generate BMI 18.5
+            Client sut = new Client("Jane Doe", 1.7, 53.6, sutClinic); //Which should generate BMI 18.5
             Assert.IsFalse(sut.IsUnderWeight);
         }
 
@@ -111,7 +112,7 @@ namespace Tests
         public void Client_OverweightEvaluationRightOnTheEdge_IsCorrect()
         {
             NutritionClinic sutClinic = SetUpTestClinic();
-            Client sut = new Client("Jane Doe", 1.7, 72.2, sutClinic.Dietitian, sutClinic.PersonalTrainer); //Which should generate BMI 25.0
+            Client sut = new Client("Jane Doe", 1.7, 72.2, sutClinic); //Which should generate BMI 25.0
             Assert.IsFalse(sut.IsOverWeight);
         }
 
@@ -119,9 +120,26 @@ namespace Tests
         public void Client_OverweightEvaluationJustOverLimit_IsCorrect()
         {
             NutritionClinic sutClinic = SetUpTestClinic();
-            Client sut = new Client("Jane Doe", 1.7, 72.4, sutClinic.Dietitian, sutClinic.PersonalTrainer); //Which should generate BMI 25.1
+            Client sut = new Client("Jane Doe", 1.7, 72.4, sutClinic); //Which should generate BMI 25.1
             Assert.IsTrue(sut.IsOverWeight);
         }
+
+        [Test]
+        public void Client_EstimateProteinNeed_IsCorrect()
+        {
+            NutritionClinic sut = SetUpTestClinic();
+            Client sutClient = new Client("sut", 1.6, 100, sut);
+            Assert.AreEqual(80, sutClient.ProteinNeedPerDay);
+        }
+
+        [Test]
+        public void Client_EstimateCalorieNeed_IsCorrect()
+        {
+            NutritionClinic sut = SetUpTestClinic();
+            Client sutClient = new Client("sut", 1.6, 100, sut);
+            Assert.AreEqual(2500, sutClient.KcalNeedPerDay);
+        }
+
 
         public NutritionClinic SetUpTestClinic()
         {
