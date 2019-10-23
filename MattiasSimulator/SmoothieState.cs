@@ -26,8 +26,12 @@ namespace MattiasSimulator
             int count = 0;
             foreach (Food c in bar.Pantry)
             {
-                commands.Append($"[{count}] {c.Name} {Environment.NewLine}");
+                commands.Append($"[{count}] {c.Name} ");
                 count++;
+                if(count % 5 == 0)
+                {
+                    commands.Append(Environment.NewLine);
+                }
             }
             
             return commands.ToString().Pastel(Color.FromArgb(132, 226, 150));
@@ -49,9 +53,19 @@ namespace MattiasSimulator
                 {
                     if (int.TryParse(choice2, out int index2))
                     {
+                        try
+                        {
                         sim.messageBoard.Log(sim.theClinic.CurrentClient.DrinkSmoothie(index1, index2));
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar(sim);
+                        }
+                        finally
+                        {
                         MakeSmoothieState = 0;
-                        sim.simState = new StandardState("MESSAGE BOARD", sim.Commands);
+                        sim.simState = new StandardState("MESSAGE BOARD");
+                        }
                     }
                     else
                     {
@@ -73,7 +87,7 @@ namespace MattiasSimulator
         {
             sim.messageBoard.Log("Something was wrong with your choices... Did you pick something strange?!");
             sim.messageBoard.Log("Comeback later and try again");
-            sim.simState = new StandardState("MESSAGE BOARD", sim.Commands);
+            sim.simState = new StandardState("MESSAGE BOARD");
         }
 
         }
