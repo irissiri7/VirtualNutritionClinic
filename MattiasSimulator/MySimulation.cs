@@ -10,29 +10,24 @@ namespace MattiasSimulator
 {
     public class MySimulation : Simulation
     {
-        private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 25, 3) { };
-        private RollingDisplay messageBoard = new RollingDisplay(0, 2, 90, 21) { };
-        private BorderedDisplay commandBox = new BorderedDisplay(0, 22, 90, 10) { };
-        private BorderedDisplay patientInfo = new BorderedDisplay(95, 2, 50, 20) { };
-        private BorderedDisplay clockDisplay = new BorderedDisplay(95, 20, 50, 3) { };
-        private BorderedDisplay clinicInfo = new BorderedDisplay(95, 22, 50, 10) { };
+        public BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 25, 3) { };
+        public RollingDisplay messageBoard = new RollingDisplay(0, 2, 90, 21) { };
+        public BorderedDisplay commandBox = new BorderedDisplay(0, 22, 90, 10) { };
+        public BorderedDisplay patientInfo = new BorderedDisplay(95, 2, 50, 20) { };
+        public BorderedDisplay clockDisplay = new BorderedDisplay(95, 20, 50, 3) { };
+        public BorderedDisplay clinicInfo = new BorderedDisplay(95, 22, 50, 10) { };
 
 
+        public List<ICommand> Commands { get; set; }
         private readonly TextInput input;
-
-        private List<ICommand> Commands { get; set; }
-        private bool StandardState { get; set; }
-        private int MakeSmoothieState;
-        private string choice1;
-        private string choice2;
-
+        public State simState;
 
         private DateTime startTime;
         private DateTime runningTime;
 
         private Dietitian theDietitian { get => theClinic.Dietitian; }
         private PersonalTrainer thePersonalTrainer { get => theClinic.PersonalTrainer; }
-        private NutritionClinic theClinic { get; set; }
+        public NutritionClinic theClinic { get; set; }
         private Client CurrentClient { get => theClinic.CurrentClient; }
 
         public override List<BaseDisplay> Displays => new List<BaseDisplay>() {
@@ -50,8 +45,9 @@ namespace MattiasSimulator
             startTime = DateTime.Now;
             runningTime = DateTime.Now;
             this.theClinic = theClinic;
-            StandardState = true;
-            PopulateCommandList(Commands = new List<ICommand>());
+            simState = new StandardState("MESSAGEBOARD");
+            Commands = new List<ICommand>();
+            PopulateCommandList();
 
             messageBoard.Log($"This is the {theClinic.Name} nutrition clinic!");
             messageBoard.Log($"We help people get back in shape. Lets start by signing in a new client!");
@@ -88,125 +84,40 @@ namespace MattiasSimulator
                 messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theClinic)));
             }
 
-            if (StandardState)
-            {
-                headerMessageBoard.Value = "MESSAGE BOARD";
-                messageBoard.Log("");
-                commandBox.Value = "Available commands" + Environment.NewLine + ConstructCommandOptions(Commands);
-            }
-            else
-            {
-                headerMessageBoard.Value = "**SMOOTHIEBAR**".Pastel(Color.FromArgb(169, 253, 172));
-                messageBoard.Log("");
-                commandBox.Value = "Available ingredients" + Environment.NewLine + ConstructSmoothieBarOptions(SmoothieBar.Pantry).Pastel(Color.FromArgb(169, 253, 172));
-            }
+            
+            headerMessageBoard.Value = simState.Title;
+            commandBox.Value = simState.FillCommandBox(this);
 
             while (input.HasInput)
             {
-                if (StandardState)
-                {
-                    string command = input.Consume();
-                    int indexForCommand;
-
-                    if (int.TryParse(command, out indexForCommand))
-                    {
-                        if (Commands[indexForCommand].Name.Equals("Drink Smoothie"))
-                        {
-                            StandardState = false;
-                            messageBoard.Log(Commands[indexForCommand].Execute(theClinic));
-
-                        }
-                        else
-                        {
-                            messageBoard.Log(Commands[indexForCommand].Execute(theClinic));
-                        }
-
-                    }
-                }
-                else
-                {
-                    
-                    if (MakeSmoothieState == 0)
-                    {
-                        choice1 = input.Consume();
-                        MakeSmoothieState++;
-                        messageBoard.Log("Pick another ingredient");
-                    }
-                    else if (MakeSmoothieState == 1)
-                    {
-                        choice2 = input.Consume();
-
-                        if (int.TryParse(choice1, out int index1))
-                        {
-                            if (int.TryParse(choice2, out int index2))
-                            {
-                                messageBoard.Log(theClinic.CurrentClient.DrinkSmoothie(SmoothieBar.Pantry[index1], SmoothieBar.Pantry[index2]));
-                                MakeSmoothieState = 0;
-                                StandardState = true;
-                            }
-                            else
-                            {
-                                GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar();
-                            }
-                        }
-                        else
-                        {
-                            GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar();
-                        }
-
-                    }
-                    
-
-                }
+                string command = input.Consume();
+                simState.HandleInput(command, this); 
             }
-
-        }
-
-        private static void PopulateCommandList(List<ICommand> someList)
-        {
-            someList.Add(new SayHiToDietitian());
-            someList.Add(new SayHiToPT());
-            someList.Add(new GetDietitianAdvice());
-            someList.Add(new GetPTAdvice());
-            someList.Add(new DrinkSmoothie());
-            someList.Add(new Train());
-        }
-
-        private static string ConstructCommandOptions(List<ICommand> someList)
-        {
-            string commands = "";
-            int count = 0;
-            foreach(ICommand c in someList)
-            {
-                commands += $"[{count}] {c.Name} {Environment.NewLine}";
-                count++;
-            }
-
-            return commands;
             
+            messageBoard.Log("");
         }
 
-        private static string ConstructSmoothieBarOptions(List<Food> someList)
+        private void PopulateCommandList()
+        {
+            Commands.Add(new SayHiToDietitian());
+            Commands.Add(new SayHiToPT());
+            Commands.Add(new GetDietitianAdvice());
+            Commands.Add(new GetPTAdvice());
+            Commands.Add(new DrinkSmoothie());
+            Commands.Add(new Train());
+        }
+
+        public string ConstructCommandOptions()
         {
             string commands = "";
             int count = 0;
-            foreach (Food c in someList)
+            foreach (ICommand c in Commands)
             {
                 commands += $"[{count}] {c.Name} {Environment.NewLine}";
                 count++;
             }
 
             return commands;
-
         }
-
-        private void GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar()
-        {
-            messageBoard.Log("Something was wrong with your choices... Did you pick something strange?!");
-            messageBoard.Log("Comeback later and try again");
-            MakeSmoothieState = 0;
-            StandardState = true;
-        }
-
     }
 }

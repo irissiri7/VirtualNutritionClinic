@@ -39,6 +39,7 @@ namespace NutritionClinicLibrary
             
             return Math.Round(someClient.Weight * 0.8);
         }
+
         public string Evaluate(Smoothie someSmoothie, Client someClient)
         {
             double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.2;
@@ -48,7 +49,7 @@ namespace NutritionClinicLibrary
             }
             else
             {
-                return $"{Name} says: Good amount of protein in that smoothie!";
+                return $"{Name} says: Good amount of protein in that smoothie!!!";
             }
         }
         public override string Introduction()

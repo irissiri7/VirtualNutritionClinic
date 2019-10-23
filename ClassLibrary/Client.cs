@@ -46,9 +46,9 @@ namespace NutritionClinicLibrary
             return PersonalTrainer.RandomPositiveFeedback();
 
         }
-        public string DrinkSmoothie(Food food1, Food food2)
+        public string DrinkSmoothie(int index1, int index2, NutritionClinic clinic)
         {
-            Smoothie smoothie = SmoothieBar.MakeSmoothie(food1, food2);
+            Smoothie smoothie = clinic.SmoothieBar.MakeSmoothie(clinic.SmoothieBar.Pantry[index1], clinic.SmoothieBar.Pantry[index2]);
             KcalEatenToday += smoothie.KcalPerportion;
             ProteinEatenToday += smoothie.ProteinPerportion;
 

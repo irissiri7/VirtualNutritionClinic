@@ -12,6 +12,7 @@ namespace NutritionClinicLibrary
         public PersonalTrainer PersonalTrainer { get; set; }
         public Client CurrentClient { get; private set; }
         public List<Client> ClientRecord { get; private set; }
+        public SmoothieBar SmoothieBar {get; set;}
         
         //FIELDS
 
@@ -22,6 +23,7 @@ namespace NutritionClinicLibrary
             Dietitian = dietitian;
             PersonalTrainer = personalTrainer;
             ClientRecord = new List<Client>();
+            SmoothieBar = new SmoothieBar();
         }
         
         //METHODS

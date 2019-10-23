@@ -8,7 +8,7 @@ namespace NutritionClinicLibrary
 {
     public class SmoothieBar
     {
-        public static List<Food> Pantry { get =>
+        public List<Food> Pantry { get =>
                 new List<Food>
                 {
                     new Food("apple", 50, 5),
@@ -20,10 +20,24 @@ namespace NutritionClinicLibrary
                     new Food("peanuts", 500, 55)
                 };
         }
+
         
-        public static Smoothie MakeSmoothie(Food food1, Food food2)
+        public Smoothie MakeSmoothie(Food food1, Food food2)
         {
             return new Smoothie(food1, food2);
+        }
+
+        public string ConstructSmoothieBarOptions()
+        {
+            string commands = "";
+            int count = 0;
+            foreach (Food c in Pantry)
+            {
+                commands += $"[{count}] {c.Name} {Environment.NewLine}";
+                count++;
+            }
+
+            return commands;
         }
 
     }

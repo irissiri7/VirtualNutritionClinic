@@ -5,7 +5,7 @@ using NutritionClinicLibrary;
 
 namespace MattiasSimulator
 {
-    interface ICommand
+    public interface ICommand
     {
         public string Name { get; }
 
