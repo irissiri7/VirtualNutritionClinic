@@ -12,17 +12,19 @@ namespace MattiasSimulator
         private int MakeSmoothieState = 0;
         private string choice1 = "";
         private string choice2 = "";
-        
-        public SmoothieState(string title) : base(title)
+        private readonly SmoothieBar bar;
+
+        public SmoothieState(string title, SmoothieBar bar) : base(title)
         {
+            this.bar = bar;
         }
 
-        public override string FillCommandBox(MySimulation sim)
+        public override string FillCommandBox()
         {
             StringBuilder commands = new StringBuilder();
             commands.Append($"Available Ingredients:{Environment.NewLine}");
             int count = 0;
-            foreach (Food c in sim.theClinic.SmoothieBar.Pantry)
+            foreach (Food c in bar.Pantry)
             {
                 commands.Append($"[{count}] {c.Name} {Environment.NewLine}");
                 count++;
@@ -49,7 +51,7 @@ namespace MattiasSimulator
                     {
                         sim.messageBoard.Log(sim.theClinic.CurrentClient.DrinkSmoothie(index1, index2));
                         MakeSmoothieState = 0;
-                        sim.simState = new StandardState("MESSAGE BOARD");
+                        sim.simState = new StandardState("MESSAGE BOARD", sim.Commands);
                     }
                     else
                     {
@@ -71,7 +73,7 @@ namespace MattiasSimulator
         {
             sim.messageBoard.Log("Something was wrong with your choices... Did you pick something strange?!");
             sim.messageBoard.Log("Comeback later and try again");
-            sim.simState = new StandardState("MESSAGE BOARD");
+            sim.simState = new StandardState("MESSAGE BOARD", sim.Commands);
         }
 
         }

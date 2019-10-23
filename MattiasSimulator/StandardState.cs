@@ -10,16 +10,19 @@ namespace MattiasSimulator
 {
     public class StandardState : State
     {
-        public StandardState(string title) : base(title)
+        private readonly List<ICommand> commandList;
+        
+        public StandardState(string title, List<ICommand> commandList) : base(title)
         {
+            this.commandList = commandList;
         }
 
-        public override string FillCommandBox(MySimulation sim)
+        public override string FillCommandBox()
         {
             StringBuilder commands = new StringBuilder();
             commands.Append($"Available Commands: {Environment.NewLine}");
             int count = 0;
-            foreach (ICommand c in sim.Commands)
+            foreach (ICommand c in commandList)
             {
                 commands.Append($"[{count}] {c.Name} {Environment.NewLine}");
                 count++;

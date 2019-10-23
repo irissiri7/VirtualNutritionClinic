@@ -45,9 +45,9 @@ namespace MattiasSimulator
             startTime = DateTime.Now;
             runningTime = DateTime.Now;
             this.theClinic = theClinic;
-            simState = new StandardState("MESSAGEBOARD");
             Commands = new List<ICommand>();
             PopulateCommandList();
+            simState = new StandardState("MESSAGEBOARD", Commands);
 
             messageBoard.Log($"This is the {theClinic.Name} nutrition clinic!");
             messageBoard.Log($"We help people get back in shape. Lets start by signing in a new client!");
@@ -86,7 +86,7 @@ namespace MattiasSimulator
 
             
             headerMessageBoard.Value = simState.title;
-            commandBox.Value = simState.FillCommandBox(this);
+            commandBox.Value = simState.FillCommandBox();
 
             while (input.HasInput)
             {

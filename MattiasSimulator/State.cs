@@ -8,14 +8,15 @@ namespace MattiasSimulator
     {
         public readonly string title;
         
-        public abstract void HandleInput(string input, MySimulation sim);
-        
-        public abstract string FillCommandBox(MySimulation sim);
-        
         public State(string title)
         {
             this.title = title;
         }
+
+        public abstract void HandleInput(string input, MySimulation sim);
+        
+        public abstract string FillCommandBox();
+        
 
 
     }
