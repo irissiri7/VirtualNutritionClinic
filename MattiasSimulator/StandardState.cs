@@ -5,26 +5,16 @@ using ConsoleSimulationEngine2000;
 using NutritionClinicLibrary;
 using Pastel;
 using System.Drawing;
-using MattiasSimulator.Commands;
 
 namespace MattiasSimulator
 {
     public class StandardState : State
     {
-        private List<ICommand> CommandList { get =>
-                new List<ICommand>
-                {
-                    new SayHiToDietitian(),
-                    new SayHiToPT(),
-                    new GetDietitianAdvice(),
-                    new GetPTAdvice(),
-                    new DrinkSmoothie(),
-                    new Train(),
-                };
-        }
+        private readonly List<ICommand> commandList;
         
-        public StandardState(string title) : base(title)
+        public StandardState(string title, List<ICommand> commandList) : base(title)
         {
+            this.commandList = commandList;
         }
 
         public override string FillCommandBox()
@@ -32,7 +22,7 @@ namespace MattiasSimulator
             StringBuilder commands = new StringBuilder();
             commands.Append($"Available Commands: {Environment.NewLine}");
             int count = 0;
-            foreach (ICommand c in CommandList)
+            foreach (ICommand c in commandList)
             {
                 commands.Append($"[{count}] {c.Name} {Environment.NewLine}");
                 count++;
@@ -47,14 +37,7 @@ namespace MattiasSimulator
 
             if (int.TryParse(command, out index))
             {
-                try
-                {
-                sim.messageBoard.Log(CommandList[index].Execute(sim));
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    sim.messageBoard.Log("Not a valid command");
-                }
+                sim.messageBoard.Log(sim.Commands[index].Execute(sim));
             }
         }
         

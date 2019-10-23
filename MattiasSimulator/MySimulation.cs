@@ -18,6 +18,7 @@ namespace MattiasSimulator
         public BorderedDisplay clinicInfo = new BorderedDisplay(95, 22, 50, 10) { };
 
 
+        public List<ICommand> Commands { get; set; }
         private readonly TextInput input;
         public State simState;
 
@@ -44,7 +45,9 @@ namespace MattiasSimulator
             startTime = DateTime.Now;
             runningTime = DateTime.Now;
             this.theClinic = theClinic;
-            simState = new StandardState("MESSAGEBOARD");
+            Commands = new List<ICommand>();
+            PopulateCommandList();
+            simState = new StandardState("MESSAGEBOARD", Commands);
 
             messageBoard.Log($"This is the {theClinic.Name} nutrition clinic!");
             messageBoard.Log($"We help people get back in shape. Lets start by signing in a new client!");
@@ -94,7 +97,15 @@ namespace MattiasSimulator
             messageBoard.Log("");
         }
 
-        
+        private void PopulateCommandList()
+        {
+            Commands.Add(new SayHiToDietitian());
+            Commands.Add(new SayHiToPT());
+            Commands.Add(new GetDietitianAdvice());
+            Commands.Add(new GetPTAdvice());
+            Commands.Add(new DrinkSmoothie());
+            Commands.Add(new Train());
+        }
 
         
     }
