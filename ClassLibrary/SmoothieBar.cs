@@ -23,6 +23,7 @@ namespace NutritionClinicLibrary
 
                     new Food("Spinach", 15, 2),
                     new Food("Kale", 30, 0),
+                    new Food("Broccoli", 30, 0),
 
                     new Food("Peanuts", 500, 55),
                     new Food("Walnuts", 600, 10),
