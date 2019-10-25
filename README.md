@@ -7,8 +7,8 @@ weight.
 The clinic consists of four major enteties: a dietitian, a personal trainer, a 
 smoothiebar and, of course, the clients. As a user of this domain model, you get 
 to decide the interactions between these enteties by multiple different choices 
-displayed in the simulation. Every day the client health is evaluated, if the calories consumed
-are less than calorie need, the client loses weight. If the calories consumed exceed the
+displayed in the simulation. Every day the clients health is evaluated, if the calories consumed
+are less than the calorie need, the client loses weight. If the calories consumed exceed the
 calorie need, the client gains weight.
 When the client reaches normal weight he/she is discharged and a new client is admited.
 If a client drops below BMI 12 he/she is admited to the hospital. 
@@ -26,7 +26,7 @@ holding all the information about the command itself. The command classes then
 implement the ICommand interface, declaring an Execute() method for all commands.
 
 Lastly, a set of smaller classes have been constructed to support the major enteties, 
-for example a smoothie bar has objects of type smoothie and a smoothie has objects of
-type food. Hopefully somewhat self explanatory.
+for example the smoothie bar has objects of type smoothie and a smoothie has objects of
+type food. Hopefully somewhat self explanatory in the code base.
 
 Well, enjoy!
