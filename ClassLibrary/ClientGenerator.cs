@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NutritionClinicLibrary
 {
-    public class ClientGenerator
+    public static class ClientGenerator
     {
         public static Client GenerateRandomClient(NutritionClinic clinic)
         {

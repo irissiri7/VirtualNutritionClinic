@@ -58,7 +58,6 @@ namespace NutritionClinicLibrary
                 $"{PersonalDietitian.Evaluate(smoothie, this)} {Environment.NewLine}" +
                 $"{PersonalTrainer.Evaluate(smoothie, this)} {Environment.NewLine}";
         }
-        //State
         public string GetGoals()
         {
             return $"Ideal weight: {IdealWeight}. {Environment.NewLine}Kcal/day: {KcalNeedPerDay} kcal. {Environment.NewLine}Protein/day {ProteinNeedPerDay} g.";
@@ -117,7 +116,6 @@ namespace NutritionClinicLibrary
                 return "Calorie intake is equal to calorie need. Weight is unchanged";
             }
         }
-        
         public string PrintWeightIncreaseMessage()
         {
             return $"{Name} ate more calories than calorie need.{Environment.NewLine}" + 
@@ -128,7 +126,6 @@ namespace NutritionClinicLibrary
             return $"{Name} ate less calories than calorie need.{Environment.NewLine}" +
                     $"Weight has decreased 5 kg and prevoius intakes has been reset.";
         }
-        //Bools
         public bool NeedsHozpitalization()
         {
             return BMI < 12;

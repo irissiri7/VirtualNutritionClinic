@@ -7,8 +7,6 @@ namespace NutritionClinicLibrary
 {
     public class Dietitian : Employee, ISmoothieEvaluator
     {
-        //FIELDS
-        //PROPERTIES
         //CONSTRUCTOR
         public Dietitian(string name, Positions position) : base(name, position)
         {

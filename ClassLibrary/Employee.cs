@@ -14,13 +14,13 @@ namespace NutritionClinicLibrary
         public string Name { get; private set; }
         public Positions Position { get; private set; }
 
-        //FIELDS
         //CONSTRUCTOR
         public Employee(string name, Positions position)
         {
             Name = name;
             Position = position;
         }
+        
         //METHODS
         public abstract string Introduction();
         public abstract string GiveAdvice(Client someClient);

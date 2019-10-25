@@ -11,6 +11,7 @@ namespace MattiasSimulator
 {
     public class StandardState : State
     {
+        //PROPERTIES
         private List<ICommand> CommandList { get =>
                 new List<ICommand>
                 {
@@ -23,10 +24,12 @@ namespace MattiasSimulator
                 };
         }
         
+        //CONSTRUCTOR
         public StandardState(string title) : base(title)
         {
         }
 
+        //METHODS
         public override string FillCommandBox()
         {
             StringBuilder commands = new StringBuilder();
@@ -40,7 +43,6 @@ namespace MattiasSimulator
 
             return commands.ToString();
         }
-
         public override void HandleInput(string command, MySimulation sim)
         {
             int index;
@@ -55,6 +57,10 @@ namespace MattiasSimulator
                 {
                     sim.messageBoard.Log("Not a valid command");
                 }
+            }
+            else
+            {
+                sim.messageBoard.Log("Not a valid command");
             }
         }
         

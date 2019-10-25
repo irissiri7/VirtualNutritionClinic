@@ -7,8 +7,6 @@ namespace NutritionClinicLibrary
 {
     public class PersonalTrainer : Employee, ISmoothieEvaluator
     {
-        //PROPERTIES
-        //FIELDS
         //CONSTRUCTOR
         public PersonalTrainer(string name, Positions position) : base(name, position)
         {
@@ -39,10 +37,10 @@ namespace NutritionClinicLibrary
             
             return Math.Round(someClient.Weight * 0.8);
         }
-
         public string Evaluate(Smoothie someSmoothie, Client someClient)
         {
             double proteinGoalPerSmoothie = someClient.ProteinNeedPerDay * 0.2;
+            
             if (someSmoothie.ProteinPerportion < proteinGoalPerSmoothie)
             {
                 return $"{Name} says: Too little protein in that smoothie.";

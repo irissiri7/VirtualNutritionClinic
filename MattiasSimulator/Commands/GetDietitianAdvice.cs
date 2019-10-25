@@ -11,7 +11,7 @@ namespace MattiasSimulator.Commands
 
         public string Execute(MySimulation sim)
         {
-            return sim.theClinic.Dietitian.GiveAdvice(sim.theClinic.CurrentClient);
+            return sim.TheClinic.Dietitian.GiveAdvice(sim.TheClinic.CurrentClient);
         }
     }
 }

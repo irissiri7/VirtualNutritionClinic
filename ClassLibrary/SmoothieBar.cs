@@ -8,6 +8,7 @@ namespace NutritionClinicLibrary
 {
     public class SmoothieBar
     {
+        //PROPERTIES
         public List<Food> Pantry { get =>
                 new List<Food>
                 {
@@ -35,7 +36,7 @@ namespace NutritionClinicLibrary
                 };
         }
 
-        
+        //CONSTRUCTOR
         public Smoothie MakeSmoothie(Food food1, Food food2)
         {
             return new Smoothie(food1, food2);

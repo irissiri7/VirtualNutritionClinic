@@ -10,24 +10,25 @@ namespace MattiasSimulator
 {
     public class MySimulation : Simulation
     {
-        public BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 25, 3) { };
-        public RollingDisplay messageBoard = new RollingDisplay(0, 2, 90, 21) { };
-        public BorderedDisplay commandBox = new BorderedDisplay(0, 22, 90, 10) { };
-        public BorderedDisplay patientInfo = new BorderedDisplay(95, 2, 50, 20) { };
-        public BorderedDisplay clockDisplay = new BorderedDisplay(95, 20, 50, 3) { };
-        public BorderedDisplay clinicInfo = new BorderedDisplay(95, 22, 50, 10) { };
+        //FIELDS
+        private BorderedDisplay headerMessageBoard = new BorderedDisplay(0, 0, 25, 3) { };
+        public readonly RollingDisplay messageBoard = new RollingDisplay(0, 2, 90, 21) { };
+        private BorderedDisplay commandBox = new BorderedDisplay(0, 22, 90, 10) { };
+        private BorderedDisplay patientInfo = new BorderedDisplay(95, 2, 50, 20) { };
+        private BorderedDisplay clockDisplay = new BorderedDisplay(95, 20, 50, 3) { };
+        private BorderedDisplay clinicInfo = new BorderedDisplay(95, 22, 50, 10) { };
 
 
         private readonly TextInput input;
         public State simState;
-
         private DateTime startTime;
         private DateTime runningTime;
 
-        public NutritionClinic theClinic { get; set; }
-        private Dietitian theDietitian { get => theClinic.Dietitian; }
-        private PersonalTrainer thePersonalTrainer { get => theClinic.PersonalTrainer; }
-        private Client CurrentClient { get => theClinic.CurrentClient; }
+        //PROPERTIES
+        public NutritionClinic TheClinic { get; private set; }
+        private Dietitian TheDietitian => TheClinic.Dietitian; 
+        private PersonalTrainer ThePersonalTrainer  => TheClinic.PersonalTrainer; 
+        private Client CurrentClient  => TheClinic.CurrentClient; 
 
         public override List<BaseDisplay> Displays => new List<BaseDisplay>() {
         headerMessageBoard,
@@ -38,12 +39,13 @@ namespace MattiasSimulator
         clinicInfo,
         input.CreateDisplay(0, -3, -1) };
 
+        //CONSTRUCTOR
         public MySimulation(TextInput input, NutritionClinic theClinic)
         {
             this.input = input;
             startTime = DateTime.Now;
             runningTime = DateTime.Now;
-            this.theClinic = theClinic;
+            this.TheClinic = theClinic;
             simState = new StandardState("MESSAGEBOARD");
 
             messageBoard.Log($"This is the {theClinic.Name} nutrition clinic!");
@@ -52,13 +54,18 @@ namespace MattiasSimulator
 
         }
 
+        //METHODS
         public override void PassTime(int deltaTime)
         {
             runningTime = runningTime.AddMinutes(30).AddMilliseconds(deltaTime);
 
-            patientInfo.Value = $"CURRENT CLIENT: {Environment.NewLine}{CurrentClient.GetCurrentState()}{Environment.NewLine}{Environment.NewLine}CLIENT GOALS: {Environment.NewLine}{CurrentClient.GetGoals()}{Environment.NewLine}{Environment.NewLine}TODAYS INTAKE:{Environment.NewLine}{CurrentClient.GetTodaysIntake()}";
+            patientInfo.Value = 
+                $"CURRENT CLIENT: {Environment.NewLine}{CurrentClient.GetCurrentState()}{Environment.NewLine}{Environment.NewLine}" +
+                $"CLIENT GOALS: {Environment.NewLine}{CurrentClient.GetGoals()}{Environment.NewLine}{Environment.NewLine}" +
+                $"TODAYS INTAKE:{Environment.NewLine}{CurrentClient.GetTodaysIntake()}";
+            
             clockDisplay.Value = "Current time: " + runningTime.ToString("HH:mm:ss");
-            clinicInfo.Value = $"CLINIC NAME: {theClinic.Name} {Environment.NewLine}{Environment.NewLine}CLINIC STAFF: {Environment.NewLine}{theDietitian.Position}: {theDietitian.Name} {Environment.NewLine}{thePersonalTrainer.Position}: {thePersonalTrainer.Name} {Environment.NewLine}{Environment.NewLine}CLIENTS HELPED:{Environment.NewLine}{theClinic.ClientRecord.Count - 1}";
+            clinicInfo.Value = $"CLINIC NAME: {TheClinic.Name} {Environment.NewLine}{Environment.NewLine}CLINIC STAFF: {Environment.NewLine}{TheDietitian.Position}: {TheDietitian.Name} {Environment.NewLine}{ThePersonalTrainer.Position}: {ThePersonalTrainer.Name} {Environment.NewLine}{Environment.NewLine}CLIENTS HELPED:{Environment.NewLine}{TheClinic.ClientRecord.Count - 1}";
 
             if (runningTime.Day > startTime.Day)
             {
@@ -72,13 +79,14 @@ namespace MattiasSimulator
                 messageBoard.Log($"{CurrentClient.Name} is dangerouzly underweight and needs hospital care");
                 messageBoard.Log($"Bye {CurrentClient.Name} hope you feel better soon");
                 messageBoard.Log($"Let's sign in a new patient");
-                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theClinic)));
+
+                messageBoard.Log(TheClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(TheClinic)));
             }
             if (CurrentClient.HasReachedNormalWeight())
             {
                 messageBoard.Log("Congrats, the client has reached normal BMI!");
                 messageBoard.Log($"We will sign him/her out and sign in a new client {Environment.NewLine}");
-                messageBoard.Log(theClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(theClinic)));
+                messageBoard.Log(TheClinic.SignInNewClient(ClientGenerator.GenerateRandomClient(TheClinic)));
             }
 
             

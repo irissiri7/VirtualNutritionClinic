@@ -13,7 +13,7 @@ namespace MattiasSimulator.Commands
 
         public string Execute(MySimulation sim)
         {
-            sim.simState = new SmoothieState("**SMOOTHIE BAR**", sim.theClinic.SmoothieBar);
+            sim.simState = new SmoothieState("**SMOOTHIE BAR**", sim.TheClinic.SmoothieBar);
             return "Welcome to the Smoothie Bar. Pick two ingredients for your smoothie";
 
         }

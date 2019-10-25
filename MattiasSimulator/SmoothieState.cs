@@ -9,16 +9,19 @@ namespace MattiasSimulator
 {
     public class SmoothieState : State
     {
+        //FIELDS
         private int MakeSmoothieState = 0;
         private string choice1 = "";
         private string choice2 = "";
         private readonly SmoothieBar bar;
 
+        //CONSTRUCTOR
         public SmoothieState(string title, SmoothieBar bar) : base(title)
         {
             this.bar = bar;
         }
 
+        //METHODS
         public override string FillCommandBox()
         {
             StringBuilder commands = new StringBuilder();
@@ -36,7 +39,6 @@ namespace MattiasSimulator
             
             return commands.ToString().Pastel(Color.FromArgb(132, 226, 150));
         }
-
         public override void HandleInput(string command, MySimulation sim)
         {
             if (MakeSmoothieState == 0)
@@ -55,7 +57,7 @@ namespace MattiasSimulator
                     {
                         try
                         {
-                        sim.messageBoard.Log(sim.theClinic.CurrentClient.DrinkSmoothie(index1, index2));
+                        sim.messageBoard.Log(sim.TheClinic.CurrentClient.DrinkSmoothie(index1, index2));
                         }
                         catch (ArgumentOutOfRangeException)
                         {
@@ -82,8 +84,7 @@ namespace MattiasSimulator
 
             }
         }
-
-        public void GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar(MySimulation sim)
+        private void GiveInvalidSmoothieChoicesMessageAndThrowOutClientFromSmoothieBar(MySimulation sim)
         {
             sim.messageBoard.Log("Something was wrong with your choices... Did you pick something strange?!");
             sim.messageBoard.Log("Comeback later and try again");

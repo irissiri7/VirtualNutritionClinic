@@ -11,7 +11,7 @@ namespace MattiasSimulator
 
         public string Execute(MySimulation sim)
         {
-            return $"{sim.theClinic.CurrentClient.Name} trained! {sim.theClinic.CurrentClient.Train()}";
+            return $"{sim.TheClinic.CurrentClient.Name} trained! {sim.TheClinic.CurrentClient.Train()}";
         }
     }
 }
